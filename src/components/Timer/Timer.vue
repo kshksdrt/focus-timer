@@ -87,7 +87,7 @@ import SvgIcon from "@/components/BaseComponents/SvgIcon.vue";
 import NotifyModal from "@/components/Timer/NotifyModal.vue";
 
 import { Timer, TimerBarSegment, Spec } from "@/scripts/store/interfaces";
-import { get } from "@/scripts/store/state";
+import { get } from "@/scripts/store/states/timer";
 import { data, actions } from "@/scripts/core/useTimer";
 
 export default defineComponent({

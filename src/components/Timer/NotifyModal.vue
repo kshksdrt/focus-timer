@@ -19,7 +19,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { icons } from "@/scripts/core/iconsList";
+
+const iconsList = require("@/lib/iconsList.json");
 
 export default defineComponent({
 	name: "NotifyModal",
@@ -53,7 +54,7 @@ export default defineComponent({
 	},
 	setup(props) {
 		return {
-			iconValid: icons.includes(props.titleIcon),
+			iconValid: iconsList.includes(props.titleIcon),
 		};
 	},
 });

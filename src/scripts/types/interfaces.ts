@@ -7,7 +7,7 @@ export interface Timer {
 
 export interface Spec {
   name: string;
-  icon: string;
+  icon?: string;
   duration: number;
 }
 

@@ -49,9 +49,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
-import { get, mutate } from "@/scripts/store/state";
-import { Timer } from "@/scripts/store/interfaces";
+import { defineComponent } from "vue";
+import { get, mutate } from "@/scripts/store/states/timer";
 
 export default defineComponent({
 	name: "Options",

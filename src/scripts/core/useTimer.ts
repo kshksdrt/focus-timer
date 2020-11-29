@@ -1,5 +1,5 @@
 import { computed, reactive } from "vue";
-import { CountdownState } from '../store/interfaces';
+import { CountdownState } from '../types/interfaces';
 
 const timer = reactive({
   current: 0,
@@ -8,7 +8,7 @@ const timer = reactive({
 
 let count: number;
 function countdownFunction() {
-  const oneSecond = process.env.NODE_ENV === "production" ? 1 : 36
+  const oneSecond = process.env.NODE_ENV === "production" ? 1 : 100
   if (timer.current === 0) {
     onComplete()
     return

@@ -1,4 +1,4 @@
-import { Timer } from "@/scripts/store/interfaces";
+import { Timer } from "@/scripts/types/interfaces";
 
 const LS_KEYS = {
   saved: 'focus-timer.library'

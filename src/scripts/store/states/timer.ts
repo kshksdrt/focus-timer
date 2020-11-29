@@ -1,42 +1,32 @@
 import { computed, reactive, ref } from "vue";
 import { v4 as uuid } from "uuid";
-import { Timer } from "@/scripts/store/interfaces";
-import { storeTimersToLs } from './ls';
-// import { storeTimersToLs } from "@/scripts/store/ls";
 
-const presets = [
-  {
-    id: "cc03ab9b-e846-48a1-a44b-9990faad447e",
-    name: "Pomodoro Timer",
-    desc: "The Pomodoro Technique is a time management method developed by Francesco Cirillo in the late 1980s. The idea is to break down work into intervals, traditionally 25 minutes in length, separated by short breaks of 5 minutes.",
-    spec: [
-      { name: "work", icon: "work", duration: 25 },
-      { name: "break", icon: "local_cafe", duration: 5 },
-    ],
-  }
-]
+import { Timer } from "@/scripts/types/interfaces";
+import { storeTimersToLs } from '../ls';
 
 // State
 const timers = ref([] as Timer[])
 const externals = ref([] as Timer[])
 const currentTimer = ref({} as Timer)
-
 const settings = reactive({
   lastUsedTimer: ""
 })
 
-presets.forEach(x => externals.value.push(x))
+// On startup
+const library = require("@/lib/timersList.json");
+library.forEach((x: Timer) => externals.value.push(x))
+
 // Mutations
 function importTimer (id: string) {
   const result = externals.value.find((x) => x.id === id);
   const doesExist = timers.value.find((x) => x.id === id);
   if (result && !doesExist) timers.value.push(result)
-  syncLibraryToLs(timers.value)
+  exportToLs(timers.value)
 }
 
 function newTimer (timer: Timer) {
   timers.value.push(timer)
-  syncLibraryToLs(timers.value)
+  exportToLs(timers.value)
 }
 
 function removeTimer (id: string) {
@@ -46,7 +36,7 @@ function removeTimer (id: string) {
   })
   timers.value = []
   result.forEach((x: Timer) => timers.value.push(x))
-  syncLibraryToLs(timers.value)
+  exportToLs(timers.value)
 }
 
 function selectTimer (id: string) {
@@ -55,11 +45,11 @@ function selectTimer (id: string) {
 }
 
 // LocalStorage
-function syncLibraryToLs(timers: Timer[]) {
+function exportToLs(timers: Timer[]) {
   storeTimersToLs(timers)
 }
 
-function importLsData(library: Timer[]) {
+function importFromLs(library: Timer[]) {
   timers.value = library
 }
 
@@ -75,5 +65,7 @@ export const mutate = {
   removeTimer,
   selectTimer,
   importTimer,
-  importLsData,
+  importFromLs,
 }
+
+export default { get, mutate }

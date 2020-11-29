@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { get } from "@/scripts/store/state";
+import { get } from "@/scripts/store/states/timer";
 import Timer from "@/components/Timer/Timer.vue";
 
 export default defineComponent({
