@@ -81,7 +81,7 @@
 	</teleport>
 </template>
 
-<script setup="props" lang="ts">
+<script lang="ts">
 import { computed, defineComponent, ref, watch } from "vue";
 import SvgIcon from "@/components/BaseComponents/SvgIcon.vue";
 import NotifyModal from "@/components/Timer/NotifyModal.vue";
@@ -90,217 +90,221 @@ import { Timer, TimerBarSegment, Spec } from "@/scripts/store/interfaces";
 import { get } from "@/scripts/store/state";
 import { data, actions } from "@/scripts/core/useTimer";
 
-const timer = get.currentTimer;
-const currentMinute = data.current;
-const timerState = data.state;
-
-const timerVisibility = ref(false);
-if (get.currentTimer.value.id) {
-	timerVisibility.value = true;
-	generateBar(timer.value);
-}
-
-const primaryButton = computed(() => {
-	if (timerState.value === "stopped") return "play";
-	if (timerState.value === "playing") return "pause";
-	if (timerState.value === "paused") return "play";
-	if (timerState.value === "waiting") {
-		if (timer.value.spec.length <= currentSegment.value + 1) return "restart";
-		return "next";
-	}
-});
-
-function primaryButtonClickHandler() {
-	if (timerState.value === "stopped") return startTimer();
-	if (timerState.value === "playing") return pauseTimer();
-	if (timerState.value === "paused") return resumeTimer();
-	if (timerState.value === "waiting") return goToNextSegment();
-}
-
-let log = false;
-if (process.env.NODE_ENV === "development") log = true;
-
-function startTimer() {
-	if (log) console.log("Primary button clicked - starting");
-	actions.addTime(timer.value.spec[currentSegment.value].duration * 60);
-	actions.start();
-}
-
-function pauseTimer() {
-	if (log) console.log("Primary button clicked - pausing");
-	actions.pause();
-}
-
-function resumeTimer() {
-	if (log) console.log("Primary button clicked - resuming");
-	actions.resume();
-}
-
-function stopTimer() {
-	if (log) console.log("Primary button clicked - stopping");
-	actions.stop();
-}
-
-const isRemaining = computed(() => {
-	return timer.value.spec.length > currentSegment.value + 1;
-});
-
-function goToNextSegment() {
-	if (isRemaining.value === false) {
-		currentSegment.value = 0;
-	} else if (isRemaining.value === true) {
-		currentSegment.value++;
-	}
-	startTimer();
-}
-
-function getNextSegmentduration() {
-	if (timer.value.spec.length <= currentSegment.value + 1) {
-		return timer.value.spec[0].duration;
-	}
-	if (timer.value.spec.length > currentSegment.value + 1) {
-		return timer.value.spec[currentSegment.value + 1].duration;
-	}
-	return 0;
-}
-
-function countOneInHistory() {
-	console.log("Saving to history");
-}
-
-const currentSegment = ref(0);
-
-const bar = ref([] as TimerBarSegment[]);
-
-function generateBar(val: Timer) {
-	if (!val || !val.spec) return;
-
-	const totalMinutes = val.spec.reduce(
-		(acc: number, current: Spec) => acc + current.duration,
-		0
-	);
-
-	const newBar: TimerBarSegment[] = val.spec.reduce(
-		(acc: TimerBarSegment[], current: Spec, i: number) => {
-			const { name, duration } = current;
-			const newSegment: TimerBarSegment = {
-				name,
-				duration,
-				isCurrent: currentSegment.value === i,
-				css: {
-					width: Math.floor((duration / totalMinutes) * 100) + "%",
-				},
-			};
-			acc.push(newSegment);
-			return acc;
-		},
-		[]
-	);
-
-	bar.value = [];
-	newBar.forEach((each) => {
-		bar.value.push(each);
-	});
-}
-
-const countdown = computed(() => {
-	if (timerVisibility.value === false) return "00 : 00";
-	const totalSeconds = data.secondsLeft.value;
-	const min = Math.floor(totalSeconds / 60);
-	const sec = totalSeconds % 60;
-	const addZero = (x: number) => (x < 10 ? "0" + x : x);
-	return `${addZero(min)} : ${addZero(sec)}`;
-});
-
-function getClass(condition: boolean) {
-	const x = {
-		"bg-bg-3": condition ? false : true,
-		"bg-primary": condition ? true : false,
-		pt1: condition ? false : true,
-		pt2: condition ? true : false,
-	};
-	return x;
-}
-
-watch(timer, (val) => {
-	val.spec ? (timerVisibility.value = true) : (timerVisibility.value = false);
-	generateBar(val);
-});
-
-watch(currentMinute, (val) => {
-	generateBar(timer.value);
-});
-
-watch(timerState, (val) => {
-	if (val === "waiting") {
-		countOneInHistory();
-		actions.addTime(getNextSegmentduration() * 60);
-		showPopup.value = true;
-	}
-});
-
-const showPopup = ref(false);
-
-function closePopup() {
-	showPopup.value = false;
-}
-
-function onPopupButtonClicked() {
-	showPopup.value = false;
-	primaryButtonClickHandler();
-}
-
-function primaryButtonText() {
-	if (isRemaining.value === true) {
-		const { name, duration } = timer.value.spec[currentSegment.value + 1];
-		return `Start ${name} (${duration} mins)?`;
-	} else if (isRemaining.value === false) {
-		return `Start ${timer.value.name} again`;
-	}
-}
-
-function title() {
-	if (isRemaining.value === true) {
-		const prev = timer.value.spec[currentSegment.value];
-		return `${prev.name} complete!`;
-	} else if (isRemaining.value === false) {
-		return `Session complete`;
-	}
-}
-
-function message() {
-	if (isRemaining.value === true) {
-		return `You're doing great, keep it going!`;
-	} else if (isRemaining.value === false) {
-		return `You're doing great, keep it going!`;
-	}
-}
-
-export {
-	timer,
-	timerVisibility,
-	timerState,
-	title,
-	message,
-	countdown,
-	bar,
-	currentSegment,
-	currentMinute,
-	getClass,
-	startTimer,
-	stopTimer,
-	primaryButton,
-	primaryButtonClickHandler,
-	showPopup,
-	onPopupButtonClicked,
-	isRemaining,
-	primaryButtonText,
-	closePopup,
-};
-
 export default defineComponent({
 	name: "Timer",
 	components: { SvgIcon, NotifyModal },
+	setup() {
+		const timer = get.currentTimer;
+		const currentMinute = data.current;
+		const timerState = data.state;
+
+		const timerVisibility = ref(false);
+		if (get.currentTimer.value.id) {
+			timerVisibility.value = true;
+			generateBar(timer.value);
+		}
+
+		const primaryButton = computed(() => {
+			if (timerState.value === "stopped") return "play";
+			if (timerState.value === "playing") return "pause";
+			if (timerState.value === "paused") return "play";
+			if (timerState.value === "waiting") {
+				if (timer.value.spec.length <= currentSegment.value + 1)
+					return "restart";
+				return "next";
+			}
+		});
+
+		function primaryButtonClickHandler() {
+			if (timerState.value === "stopped") return startTimer();
+			if (timerState.value === "playing") return pauseTimer();
+			if (timerState.value === "paused") return resumeTimer();
+			if (timerState.value === "waiting") return goToNextSegment();
+		}
+
+		let log = false;
+		if (process.env.NODE_ENV === "development") log = true;
+
+		function startTimer() {
+			if (log) console.log("Primary button clicked - starting");
+			actions.addTime(timer.value.spec[currentSegment.value].duration * 60);
+			actions.start();
+		}
+
+		function pauseTimer() {
+			if (log) console.log("Primary button clicked - pausing");
+			actions.pause();
+		}
+
+		function resumeTimer() {
+			if (log) console.log("Primary button clicked - resuming");
+			actions.resume();
+		}
+
+		function stopTimer() {
+			if (log) console.log("Primary button clicked - stopping");
+			actions.stop();
+		}
+
+		const isRemaining = computed(() => {
+			return timer.value.spec.length > currentSegment.value + 1;
+		});
+
+		function goToNextSegment() {
+			if (isRemaining.value === false) {
+				currentSegment.value = 0;
+			} else if (isRemaining.value === true) {
+				currentSegment.value++;
+			}
+			startTimer();
+		}
+
+		function getNextSegmentduration() {
+			if (timer.value.spec.length <= currentSegment.value + 1) {
+				return timer.value.spec[0].duration;
+			}
+			if (timer.value.spec.length > currentSegment.value + 1) {
+				return timer.value.spec[currentSegment.value + 1].duration;
+			}
+			return 0;
+		}
+
+		function countOneInHistory() {
+			console.log("Saving to history");
+		}
+
+		const currentSegment = ref(0);
+
+		const bar = ref([] as TimerBarSegment[]);
+
+		function generateBar(val: Timer) {
+			if (!val || !val.spec) return;
+
+			const totalMinutes = val.spec.reduce(
+				(acc: number, current: Spec) => acc + current.duration,
+				0
+			);
+
+			const newBar: TimerBarSegment[] = val.spec.reduce(
+				(acc: TimerBarSegment[], current: Spec, i: number) => {
+					const { name, duration } = current;
+					const newSegment: TimerBarSegment = {
+						name,
+						duration,
+						isCurrent: currentSegment.value === i,
+						css: {
+							width: Math.floor((duration / totalMinutes) * 100) + "%",
+						},
+					};
+					acc.push(newSegment);
+					return acc;
+				},
+				[]
+			);
+
+			bar.value = [];
+			newBar.forEach((each) => {
+				bar.value.push(each);
+			});
+		}
+
+		const countdown = computed(() => {
+			if (timerVisibility.value === false) return "00 : 00";
+			const totalSeconds = data.secondsLeft.value;
+			const min = Math.floor(totalSeconds / 60);
+			const sec = totalSeconds % 60;
+			const addZero = (x: number) => (x < 10 ? "0" + x : x);
+			return `${addZero(min)} : ${addZero(sec)}`;
+		});
+
+		function getClass(condition: boolean) {
+			const x = {
+				"bg-bg-3": condition ? false : true,
+				"bg-primary": condition ? true : false,
+				pt1: condition ? false : true,
+				pt2: condition ? true : false,
+			};
+			return x;
+		}
+
+		watch(timer, (val) => {
+			val.spec
+				? (timerVisibility.value = true)
+				: (timerVisibility.value = false);
+			generateBar(val);
+		});
+
+		watch(currentMinute, (val) => {
+			generateBar(timer.value);
+		});
+
+		watch(timerState, (val) => {
+			if (val === "waiting") {
+				countOneInHistory();
+				actions.addTime(getNextSegmentduration() * 60);
+				showPopup.value = true;
+			}
+		});
+
+		const showPopup = ref(false);
+
+		function closePopup() {
+			showPopup.value = false;
+		}
+
+		function onPopupButtonClicked() {
+			showPopup.value = false;
+			primaryButtonClickHandler();
+		}
+
+		function primaryButtonText() {
+			if (isRemaining.value === true) {
+				const { name, duration } = timer.value.spec[currentSegment.value + 1];
+				return `Start ${name} (${duration} mins)?`;
+			} else if (isRemaining.value === false) {
+				return `Start ${timer.value.name} again`;
+			}
+		}
+
+		function title() {
+			if (isRemaining.value === true) {
+				const prev = timer.value.spec[currentSegment.value];
+				return `${prev.name} complete!`;
+			} else if (isRemaining.value === false) {
+				return `Session complete`;
+			}
+		}
+
+		function message() {
+			if (isRemaining.value === true) {
+				return `You're doing great, keep it going!`;
+			} else if (isRemaining.value === false) {
+				return `You're doing great, keep it going!`;
+			}
+		}
+
+		return {
+			timer,
+			timerVisibility,
+			timerState,
+			title,
+			message,
+			countdown,
+			bar,
+			currentSegment,
+			currentMinute,
+			getClass,
+			startTimer,
+			stopTimer,
+			primaryButton,
+			primaryButtonClickHandler,
+			showPopup,
+			onPopupButtonClicked,
+			isRemaining,
+			primaryButtonText,
+			closePopup,
+		};
+	},
 });
 </script>
 

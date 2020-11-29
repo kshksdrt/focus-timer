@@ -48,36 +48,37 @@
 	</div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import { computed, defineComponent } from "vue";
 import { get, mutate } from "@/scripts/store/state";
 import { Timer } from "@/scripts/store/interfaces";
 
-const myTimers = get.timers;
-const externals = get.externals;
-const current = get.currentTimer;
-
-function importTimerFromExternal(id: string) {
-	mutate.importTimer(id);
-}
-
-function selectTimer(id: string) {
-	mutate.selectTimer(id);
-}
-
-function isSelected(id: string) {
-	return current.value.id === id;
-}
-
-export {
-	myTimers,
-	externals,
-	importTimerFromExternal,
-	selectTimer,
-	isSelected,
-};
-
 export default defineComponent({
 	name: "Options",
+	setup() {
+		const myTimers = get.timers;
+		const externals = get.externals;
+		const current = get.currentTimer;
+
+		function importTimerFromExternal(id: string) {
+			mutate.importTimer(id);
+		}
+
+		function selectTimer(id: string) {
+			mutate.selectTimer(id);
+		}
+
+		function isSelected(id: string) {
+			return current.value.id === id;
+		}
+
+		return {
+			myTimers,
+			externals,
+			importTimerFromExternal,
+			selectTimer,
+			isSelected,
+		};
+	},
 });
 </script>

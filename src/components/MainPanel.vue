@@ -14,17 +14,18 @@
 	</div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import { defineComponent } from "vue";
 import { get } from "@/scripts/store/state";
 import Timer from "@/components/Timer/Timer.vue";
 
-const timer = get.currentTimer;
-
-export { timer };
-
 export default defineComponent({
 	name: "MainPanel",
 	components: { Timer },
+	setup() {
+		return {
+			timer: get.currentTimer,
+		};
+	},
 });
 </script>
