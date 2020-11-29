@@ -8,11 +8,12 @@ const timer = reactive({
 
 let count: number;
 function countdownFunction() {
+  const oneSecond = process.env.NODE_ENV === "production" ? 1 : 36
   if (timer.current === 0) {
     onComplete()
     return
   }
-  timer.current = timer.current - 100
+  timer.current = timer.current - oneSecond
   // console.log("counting", timer.current)
 }
 
