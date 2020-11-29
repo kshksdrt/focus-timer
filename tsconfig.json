@@ -26,6 +26,10 @@
       "scripthost"
     ]
   },
+  "rules": {
+    "@typescript-eslint/no-use-before-define": "off",
+		"no-use-before-define": "off",
+  },
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",

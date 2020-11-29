@@ -1,0 +1,604 @@
+.inline-block {
+	display: inline-block;
+}
+
+.m-auto {
+	margin: auto;
+}
+
+.text-danger {
+	color: var(--red);
+	font-size: smaller;
+}
+
+.text-success {
+	color: var(--green);
+	font-size: smaller;
+}
+
+.text-smallest {
+	font-size: 11px;
+}
+
+.text-smaller {
+	font-size: 12px;
+}
+
+.text-small {
+	font-size: 13px;
+}
+
+.text-medium {
+	font-size: 14px;
+}
+
+.text-large {
+	font-size: 15px;
+}
+
+.text-larger {
+	font-size: 16px;
+}
+
+.text-largest {
+	font-size: 17px;
+}
+
+.text-bold {
+	font-weight: 700;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.relative {
+	position: relative;
+}
+
+.absolute {
+	position: absolute;
+}
+
+.above {
+	top: -100%;
+}
+
+.below {
+	bottom: -100%;
+}
+
+.top {
+	top: 0;
+}
+
+.bottom {
+	bottom: 0;
+}
+
+.left {
+	left: 0;
+}
+
+.right {
+	right: 0;
+}
+
+.flex-center {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.flex-between {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.flex-even {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-evenly;
+}
+
+.flex-start {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.flex-end {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+.flex-column-center {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.flex-column-between {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.flex-column-even {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+}
+
+.flex-column-start {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.flex-column-end {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+.flex-row-reverse {
+	flex-direction: row-reverse;
+}
+
+.flex-column-reverse {
+	flex-direction: column-reverse;
+}
+
+.flex-grow {
+	flex-grow: 1;
+}
+
+.flex-shrink {
+	flex-shrink: 1;
+}
+
+.flex-align-start {
+	align-items: flex-start;
+}
+
+.flex-align-stretch {
+	align-items: stretch;
+}
+
+.flex-1 {
+	flex: 1;
+}
+
+.flex-2 {
+	flex: 2;
+}
+
+.flex-3 {
+	flex: 3;
+}
+
+.flex-4 {
+	flex: 4;
+}
+
+.flex-5 {
+	flex: 5;
+}
+
+.flex-gap-1 {
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.flex-gap-2 {
+	flex-wrap: wrap;
+	gap: 24px;
+}
+
+.text-bg-1 {
+	color: var(--bg-1);
+}
+
+.text-bg-2 {
+	color: var(--bg-2);
+}
+
+.text-bg-3 {
+	color: var(--bg-3);
+}
+
+.text-bg-4 {
+	color: var(--bg-4);
+}
+
+.text-white {
+	color: white;
+}
+
+.bg-background {
+	background: var(--bg);
+}
+
+.bg-text {
+	background: var(--text);
+}
+
+.bg-bg-0 {
+	background: var(--bg-0);
+}
+
+.bg-bg-1 {
+	background: var(--bg-1);
+}
+
+.bg-bg-2 {
+	background: var(--bg-2);
+}
+
+.bg-bg-3 {
+	background: var(--bg-3);
+}
+
+.bg-bg-6 {
+	background: var(--bg-6);
+}
+
+.bg-bg-7 {
+	background: var(--bg-7);
+}
+
+.bg-bg-8 {
+	background: var(--bg-8);
+}
+
+.bg-bg-9 {
+	background: var(--bg-9);
+}
+
+.bg-primary {
+	background: var(--primary);
+}
+
+.bg-secondary {
+	background: var(--secondary);
+}
+
+.bg-blue {
+	background: var(--blue);
+}
+
+.bg-teal {
+	background: var(--teal);
+}
+
+.bg-orange {
+	background: var(--orange);
+}
+
+.bg-red {
+	background: var(--red);
+}
+
+.bg-purple {
+	background: var(--purple);
+}
+
+.bg-deep-purple {
+	background: var(--deep-purple);
+}
+
+.bg-indigo {
+	background: var(--indigo);
+}
+
+.bg-blue {
+	background: var(--blue);
+}
+
+.bg-cyan {
+	background: var(--cyan);
+}
+
+.bg-teal {
+	background: var(--teal);
+}
+
+.bg-green {
+	background: var(--green);
+}
+
+.bg-yellow {
+	background: var(--yellow);
+}
+
+.bg-orange {
+	background: var(--orange);
+}
+
+.bg-gray {
+	background: var(--gray);
+}
+
+.bg-blue-gray {
+	background: var(--blue-gray);
+}
+
+.text-primary {
+	color: var(--primary);
+}
+
+.text-secondary {
+	color: var(--secondary);
+}
+
+.text-justify-center {
+	text-align: center;
+}
+
+.bg-none {
+	background: rgba(0, 0, 0, 0);
+}
+
+.text-dim {
+	color: var(--bg-5);
+}
+
+.width-smaller {
+	width: 50px;
+}
+
+.width-small {
+	width: 80px;
+}
+
+.width-medium {
+	width: 100px;
+}
+
+.width-large {
+	width: 120px;
+}
+
+.width-larger {
+	width: 150px;
+}
+
+.full-width {
+	width: 100%;
+}
+
+.full-height {
+	height: 100%;
+}
+
+.half-width {
+	width: 50%;
+}
+
+.half-height {
+	height: 50%;
+}
+
+.width-one-fourth {
+	width: 75%;
+}
+
+.height-one-fourth {
+	height: 75%;
+}
+
+.overflow-auto {
+	overflow-x: auto;
+	overflow-y: auto;
+}
+
+.overflow-scroll {
+	overflow-x: scroll;
+	overflow-y: scroll;
+}
+
+.text-wrap {
+	overflow-wrap: break-word;
+}
+
+.grid-container {
+	display: grid;
+	gap: 2rem;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.border-top {
+	border-top: 1px solid var(--bg-3);
+}
+
+.border-right {
+	border-right: 1px solid var(--bg-3);
+}
+
+.border-bottom {
+	border-bottom: 1px solid var(--bg-3);
+}
+
+.border-left {
+	border-left: 1px solid var(--bg-3);
+}
+
+.rounded-full {
+	border-radius: 1000px;
+}
+
+.rounded-subtle {
+	border-radius: 4px;
+}
+
+.rounded-chamfer {
+	border-radius: 3px;
+}
+
+.no-select {
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+
+.size-smallest {
+	width: 12px;
+	height: 12px;
+}
+
+.size-smaller {
+	width: 14px;
+	height: 14px;
+}
+
+.size-small {
+	width: 16px;
+	height: 16px;
+}
+
+.size-medium {
+	width: 15px;
+	height: 15px;
+}
+
+.size-large {
+	width: 18px;
+	height: 18px;
+}
+
+.size-larger {
+	width: 20px;
+	height: 20px;
+}
+
+.size-largest {
+	width: 22px;
+	height: 22px;
+}
+
+.active-bg-1:active {
+	background: var(--bg-1);
+}
+
+.active-bg-2:active {
+	background: var(--bg-2);
+}
+
+.active-bg-3:active {
+	background: var(--bg-3);
+}
+
+.hover-bg-1:active {
+	background: var(--bg-2);
+}
+
+.hover-bg-1:hover {
+	background: var(--bg-1);
+}
+
+.hover-bg-2:active {
+	background: var(--bg-3);
+}
+
+.hover-bg-2:hover {
+	background: var(--bg-2);
+}
+
+.hover-bg-3:active {
+	background: var(--bg-4);
+}
+
+.hover-bg-3:hover {
+	background: var(--bg-3);
+}
+
+.hover-text-highlight:hover {
+	color: var(--primary);
+}
+
+.transitions-all {
+	transition: all 100ms;
+}
+
+.uppercase {
+	text-transform: uppercase;
+}
+
+.lowercase {
+	text-transform: lowercase;
+}
+
+.capitalize {
+	text-transform: capitalize;
+}
+
+.underline {
+	text-decoration: underline;
+}
+
+.decoration-none {
+	text-decoration: none;
+}
+
+.width-50 {
+	width: 50px;
+}
+
+.width-75 {
+	width: 75px;
+}
+
+.width-100 {
+	width: 100px;
+}
+
+.width-125 {
+	width: 125px;
+}
+
+.width-150 {
+	width: 150px;
+}
+
+.box-shadow-subtle {
+	-moz-box-shadow: 1px 1px 4px 0px #00000040;
+	-webkit-box-shadow: 1px 1px 4px 0px #00000040;
+	box-shadow: 1px 1px 4px 0px #00000040;
+}
+
+.overflow-ellipsis {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.center-center {
+	transform: translate(50%, 50%);
+}
+
+.pointer-events-none {
+	pointer-events: none;
+}
+
+.thin {
+	font-weight: 300;
+}
