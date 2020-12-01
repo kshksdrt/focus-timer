@@ -9,9 +9,6 @@ const timers = ref([] as Timer[])
 const externals = ref([] as Timer[])
 const currentTimer = ref({} as Timer)
 const timerSelected = ref(false)
-// const settings = reactive({
-//   lastUsedTimer: ""
-// })
 
 // On startup
 const library = require("@/lib/timersList.json");
