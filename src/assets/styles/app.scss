@@ -1,24 +1,25 @@
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
-@import "@/assets/styles/utilities.scss";
 @import "@/assets/styles/spacing.scss";
 @import "@/assets/styles/elements.scss";
 @import "@/assets/styles/animations.scss";
 @import "@/assets/styles/icons.scss";
+@import "@/assets/styles/components.scss";
+@import "@/assets/styles/utilities.scss";
 
 :root {
 	--gray0: #f2f2f2;
 	--gray1: #e8e8e8;
 	--gray2: #dfdfdf;
-	--gray3: #d1d1d1;
-	--gray4: #b6b6b6;
-	--gray5: #5d5d5d;
-	--gray6: #3f3f3f;
-	--gray7: #2f2f2f;
-	--gray8: #2a2a2a;
-	--gray9: #222222;
-	--primary: #3949ab;
+	--gray3: #b8b8b8;
+	--gray4: #828282;
+	--gray5: #464646;
+	--gray6: #353535;
+	--gray7: #222222;
+	--gray8: #1d1d1d;
+	--gray9: #131313;
+	--primary: #4959c5;
 	--secondary: #ffb300;
 	--bg-absolute: #000000;
 	--bg: var(--gray9);
@@ -37,12 +38,37 @@
 }
 
 #app {
-	box-sizing: border-box;
 	font-family: "Ubuntu", sans-serif;
 	font-weight: 400;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	/* Support for all WebKit browsers. */
+	-webkit-font-smoothing: antialiased;
+	/* Support for Safari and Chrome. */
+	text-rendering: optimizeLegibility;
+	/* Support for Firefox. */
+	-moz-osx-font-smoothing: grayscale;
+	/* Support for IE. */
+	font-feature-settings: "liga";
+
 	outline: none;
+	height: 100vh;
+	width: 100vw;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+*:focus {
+	-webkit-tap-highlight-color: transparent;
+	outline: none;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
 }
 
 input,
@@ -56,12 +82,6 @@ body {
 	width: 100vw;
 	background: var(--bg);
 	color: #ffffff;
-}
-
-.root {
-	width: clamp(50vw, 800px, 93vw);
-	margin: auto;
-	padding-top: 3rem;
 }
 
 p {
@@ -80,9 +100,20 @@ i {
 	user-select: none;
 }
 
+p,
+h4,
+h5,
+h6 {
+	margin-top: 0;
+}
+
+h2 {
+	margin: 1rem 0;
+}
+
 *::-webkit-scrollbar {
-	width: 0.4rem;
-	height: 0.4rem;
+	width: 0.3rem;
+	height: 0.3rem;
 }
 
 *::-webkit-scrollbar-track {

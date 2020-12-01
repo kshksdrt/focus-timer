@@ -1,16 +1,17 @@
-import { computed, reactive, ref } from "vue";
-import { v4 as uuid } from "uuid";
+import { ref } from "vue";
+// import { v4 as uuid } from "uuid";
 
-import { Timer } from "@/scripts/types/interfaces";
+import { Timer } from "@/scripts/types/timer";
 import { storeTimersToLs } from '../ls';
 
 // State
 const timers = ref([] as Timer[])
 const externals = ref([] as Timer[])
 const currentTimer = ref({} as Timer)
-const settings = reactive({
-  lastUsedTimer: ""
-})
+const timerSelected = ref(false)
+// const settings = reactive({
+//   lastUsedTimer: ""
+// })
 
 // On startup
 const library = require("@/lib/timersList.json");
@@ -41,7 +42,10 @@ function removeTimer (id: string) {
 
 function selectTimer (id: string) {
   const result = timers.value.find((x) => x.id === id);
-  if (result) currentTimer.value = { ...result }
+  if (result) {
+    currentTimer.value = { ...result }
+    timerSelected.value = true
+  }
 }
 
 // LocalStorage
@@ -58,6 +62,7 @@ export const get = {
   timers,
   externals,
   currentTimer,
+  timerSelected,
 }
 
 export const mutate = {

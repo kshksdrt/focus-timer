@@ -7,7 +7,7 @@ input {
 	font-size: 14px;
 	font-weight: 400;
 	color: white;
-	transition: all 100ms;
+	transition: background 80ms;
 }
 
 input:hover {
@@ -49,6 +49,11 @@ button {
 		transform: translate(-50%, -50%);
 		position: absolute;
 	}
+
+	i {
+		transform: translate(-50%, -50%);
+		position: absolute;
+	}
 }
 
 button:hover {
@@ -59,23 +64,41 @@ button:active {
 	filter: brightness(80%);
 }
 
+button.icon {
+	padding: 1.2rem;
+}
+
+button.icon:active {
+	background: var(--bg-4);
+	border-radius: 1000px;
+}
+
+button.icon:active {
+	background: var(--bg-4);
+	border-radius: 1000px;
+}
+
+.i {
+	transition: all 120ms;
+}
+
 .card {
 	background: var(--bg-1);
-	padding: 1.2rem;
-	margin-bottom: 2rem;
+	padding: 0.8rem;
+	margin: 1rem 0;
 	border-radius: 5px;
 }
 
 .card-alt {
 	background: var(--bg-0);
 	padding: 1.2rem;
-	margin-bottom: 2rem;
+	margin: 1rem 0;
 	border-radius: 5px;
 }
 
 .card-border {
 	padding: 1.2rem;
-	margin-bottom: 2rem;
+	margin: 1rem 0;
 	border: 1px solid var(--bg-2);
 	border-radius: 5px;
 }
@@ -126,4 +149,27 @@ button:active {
 }
 .modal-large {
 	width: 500px;
+}
+
+.badge {
+	position: relative;
+	background: var(--bg-2);
+	border-radius: 500px;
+	width: 30px;
+	height: 30px;
+	font-size: 13px;
+
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+	p {
+		position: absolute;
+		margin: auto;
+		transform: translate(-50%, -50%);
+		margin-left: 50%;
+		margin-top: 50%;
+	}
 }

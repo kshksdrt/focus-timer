@@ -1,98 +1,85 @@
 <template>
-	<transition name="fade">
-		<div v-if="timerVisibility === true" class="mt8">
-			<div class="flex-start full-width">
+	<div class="mb4">
+		<transition name="fade">
+			<div class="mt8 full-width">
+				<Bar :currentSegment="currentSegment" />
 				<div
-					v-for="(segment, i) in bar"
-					:key="i"
-					:style="segment.css"
-					class="relative m1 rounded-full transitions-all"
-					:class="getClass(segment.isCurrent)"
+					class="flex-center full-width rounded-full no-select bg-bg-1 mt12 mb4"
 				>
-					<div class="absolute label text-smallest">
-						<p class="m0">{{ segment.name }}</p>
-						<p class="text-dim m0">{{ `${segment.duration} mins` }}</p>
+					<h1 class="text-center">{{ countdown }}</h1>
+				</div>
+				<!-- Help text -->
+				<div v-if="timerState === 'waiting'" class="mb8">
+					<!-- Go to next segment title -->
+					<div v-if="isRemaining" class="flex-center">
+						<span class="text-center text-small">
+							{{ "Press &nbsp;&nbsp;" }} <SvgIcon name="next" />{{
+								"&nbsp;&nbsp; to start " + timer.spec[currentSegment + 1].name
+							}}
+						</span>
+					</div>
+					<!-- Start next session title -->
+					<div v-if="!isRemaining" class="flex-center">
+						<span class="text-center text-small">
+							{{ "Press &nbsp;&nbsp;" }} <SvgIcon name="restart" />{{
+								"&nbsp;&nbsp; to start next session"
+							}}
+						</span>
 					</div>
 				</div>
-			</div>
-			<div class="flex-center full-width rounded-full bg-bg-1 mt12 mb4">
-				<h1 class="text-center">{{ countdown }}</h1>
-			</div>
-			<!-- Help text -->
-			<div v-if="timerState === 'waiting'" class="mb8">
-				<!-- Go to next segment title -->
-				<div v-if="isRemaining" class="flex-center">
-					<span class="text-center text-small">
-						{{ "Press &nbsp;&nbsp;" }} <SvgIcon name="next" />{{
-							"&nbsp;&nbsp; to start " + timer.spec[currentSegment + 1].name
-						}}
-					</span>
-				</div>
-				<!-- Start next session title -->
-				<div v-if="!isRemaining" class="flex-center">
-					<span class="text-center text-small">
-						{{ "Press &nbsp;&nbsp;" }} <SvgIcon name="restart" />{{
-							"&nbsp;&nbsp; to start next session"
-						}}
-					</span>
+				<div class="flex-center">
+					<button
+						class="mr2 p5 rounded-full text-light"
+						@click="primaryButtonClickHandler"
+					>
+						<SvgIcon :name="primaryButton" />
+					</button>
+					<button class="mr2 p5 rounded-full text-light" @click="stopTimer">
+						<SvgIcon name="stop" />
+					</button>
 				</div>
 			</div>
-			<div class="flex-center">
-				<button
-					class="mr2 p5 rounded-full text-light"
-					@click="primaryButtonClickHandler"
-				>
-					<SvgIcon :name="primaryButton" />
-				</button>
-				<button class="mr2 p5 rounded-full text-light" @click="stopTimer">
-					<SvgIcon name="stop" />
-				</button>
-			</div>
-		</div>
-	</transition>
-	<transition>
-		<div v-if="timerVisibility !== true">
-			<p class="text-align">Please select a timer.</p>
-		</div>
-	</transition>
-	<!-- Debug -->
-	<!-- <p
-		v-for="(each, i) in [
-			100,
-			timerState,
-			timerVisibility,
-			currentSegment,
-			timer,
-		]"
-		:key="i"
-		class="text-smaller"
-	>
-		{{ each }}
-	</p> -->
-	<teleport to="#modal" v-if="showPopup">
-		<NotifyModal
-			@proceed-clicked="onPopupButtonClicked"
-			@close="closePopup"
-			:titleIcon="timer.spec[currentSegment].icon"
-			:title="title()"
-			:message="message()"
-			:primaryButtonText="primaryButtonText()"
-		/>
-	</teleport>
+		</transition>
+		<!-- Debug -->
+		<!-- <p
+			v-for="(each, i) in [
+				100,
+				timerState,
+				currentSegment,
+				timer,
+			]"
+			:key="i"
+			class="text-smaller"
+		>
+			{{ each }}
+		</p> -->
+		<teleport to="#modal" v-if="showPopup">
+			<NotifyModal
+				@proceed-clicked="onPopupButtonClicked"
+				@close="closePopup"
+				:titleIcon="timer.spec[currentSegment].icon"
+				:title="title()"
+				:message="message()"
+				:primaryButtonText="primaryButtonText()"
+			/>
+		</teleport>
+	</div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from "vue";
+import { defineComponent, ref, computed, watchEffect, watch } from "vue";
 import SvgIcon from "@/components/BaseComponents/SvgIcon.vue";
 import NotifyModal from "@/components/Timer/NotifyModal.vue";
+import Bar from "@/components/Timer/Bar.vue";
 
-import { Timer, TimerBarSegment, Spec } from "@/scripts/store/interfaces";
+import { Timer, TimerBarSegment, Spec } from "@/scripts/types/timer.ts";
 import { get } from "@/scripts/store/states/timer";
+import { mutate as mutateHistory } from "@/scripts/store/states/history";
 import { data, actions } from "@/scripts/core/useTimer";
 
 export default defineComponent({
 	name: "Timer",
-	components: { SvgIcon, NotifyModal },
+	components: { SvgIcon, NotifyModal, Bar },
 	setup() {
 		const timer = get.currentTimer;
 		const currentMinute = data.current;
@@ -109,8 +96,7 @@ export default defineComponent({
 			if (timerState.value === "playing") return "pause";
 			if (timerState.value === "paused") return "play";
 			if (timerState.value === "waiting") {
-				if (timer.value.spec.length <= currentSegment.value + 1)
-					return "restart";
+				if (!isRemaining.value) return "restart";
 				return "next";
 			}
 		});
@@ -126,23 +112,23 @@ export default defineComponent({
 		if (process.env.NODE_ENV === "development") log = true;
 
 		function startTimer() {
-			if (log) console.log("Primary button clicked - starting");
+			console.assert(log, "Primary button clicked - starting");
 			actions.addTime(timer.value.spec[currentSegment.value].duration * 60);
 			actions.start();
 		}
 
 		function pauseTimer() {
-			if (log) console.log("Primary button clicked - pausing");
+			console.assert(log, "Primary button clicked - pausing");
 			actions.pause();
 		}
 
 		function resumeTimer() {
-			if (log) console.log("Primary button clicked - resuming");
+			console.assert(log, "Primary button clicked - resuming");
 			actions.resume();
 		}
 
 		function stopTimer() {
-			if (log) console.log("Primary button clicked - stopping");
+			console.assert(log, "Primary button clicked - stopping");
 			actions.stop();
 		}
 
@@ -170,7 +156,8 @@ export default defineComponent({
 		}
 
 		function countOneInHistory() {
-			console.log("Saving to history");
+			const duration = timer.value.spec.reduce((a, c) => a + c.duration, 0);
+			mutateHistory.newEntry(timer.value.name, duration);
 		}
 
 		const currentSegment = ref(0);
@@ -178,7 +165,7 @@ export default defineComponent({
 		const bar = ref([] as TimerBarSegment[]);
 
 		function generateBar(val: Timer) {
-			if (!val || !val.spec) return;
+			if (!val?.spec || !bar?.value || !currentSegment?.value) return;
 
 			const totalMinutes = val.spec.reduce(
 				(acc: number, current: Spec) => acc + current.duration,
@@ -191,7 +178,7 @@ export default defineComponent({
 					const newSegment: TimerBarSegment = {
 						name,
 						duration,
-						isCurrent: currentSegment.value === i,
+						isCurrent: currentSegment?.value === i,
 						css: {
 							width: Math.floor((duration / totalMinutes) * 100) + "%",
 						},
@@ -202,7 +189,6 @@ export default defineComponent({
 				[]
 			);
 
-			bar.value = [];
 			newBar.forEach((each) => {
 				bar.value.push(each);
 			});
@@ -221,26 +207,22 @@ export default defineComponent({
 			const x = {
 				"bg-bg-3": condition ? false : true,
 				"bg-primary": condition ? true : false,
-				pt1: condition ? false : true,
-				pt2: condition ? true : false,
 			};
 			return x;
 		}
 
-		watch(timer, (val) => {
-			val.spec
-				? (timerVisibility.value = true)
-				: (timerVisibility.value = false);
-			generateBar(val);
-		});
-
-		watch(currentMinute, (val) => {
-			generateBar(timer.value);
+		watchEffect(() => {
+			if (timer.value.spec) {
+				timerVisibility.value = true;
+			} else {
+				timerVisibility.value = false;
+				generateBar(timer.value);
+			}
 		});
 
 		watch(timerState, (val) => {
 			if (val === "waiting") {
-				countOneInHistory();
+				if (isRemaining.value === false) countOneInHistory();
 				actions.addTime(getNextSegmentduration() * 60);
 				showPopup.value = true;
 			}

@@ -1,5 +1,5 @@
 import { computed, reactive } from "vue";
-import { CountdownState } from '../types/interfaces';
+import { CountdownState } from '../types/timer';
 
 const timer = reactive({
   current: 0,
@@ -14,7 +14,6 @@ function countdownFunction() {
     return
   }
   timer.current = timer.current - oneSecond
-  // console.log("counting", timer.current)
 }
 
 function start() {
