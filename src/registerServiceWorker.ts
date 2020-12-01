@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
 
+// v1
+
 import { register } from 'register-service-worker'
 
 if (process.env.NODE_ENV) {

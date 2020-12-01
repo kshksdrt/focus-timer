@@ -6,6 +6,7 @@
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -29,6 +30,8 @@
   "rules": {
     "@typescript-eslint/no-use-before-define": "off",
 		"no-use-before-define": "off",
+    "@typescript-eslint/no-var-requires": "off",
+		"no-var-requires": "off",
   },
   "include": [
     "src/**/*.ts",
