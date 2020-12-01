@@ -3,12 +3,14 @@ import { HistoryEntry } from '../types/history';
 
 const LS_KEYS = {
   saved: 'focus-timer.library',
-  history: 'focus-timer.history'
+  history: 'focus-timer.history',
+  settings: 'focus-timer.settings',
 }
 
 let log = false;
 if (process.env.NODE_ENV === "development") log = true;
 
+// Todo: Abstract logic
 export function storeTimersToLs (payload: Timer[]) {
   try {
     localStorage.setItem(LS_KEYS.saved, JSON.stringify(payload))
@@ -43,6 +45,30 @@ export function getHistoryFromLs () {
   let result = [];
   try {
     result = JSON.parse(localStorage.getItem(LS_KEYS.history) || "[]")
+  } catch (err) {
+    console.assert(log, err)
+  }
+  const end = Date.now()
+  console.assert(log, `Took ${end-start} milliseconds to read`)
+  return result
+}
+
+export function storeSettingsToLs (payload: HistoryEntry[]) {
+  const start = Date.now()
+  try {
+    localStorage.setItem(LS_KEYS.settings, JSON.stringify(payload))
+  } catch {
+    console.assert(log, "Could not write to localStorage")
+  }
+  const end = Date.now()
+  console.assert(log, `Took ${end-start} milliseconds to store`)
+}
+
+export function getSettingsFromLs () {
+  const start = Date.now()
+  let result = [];
+  try {
+    result = JSON.parse(localStorage.getItem(LS_KEYS.settings) || "{}")
   } catch (err) {
     console.assert(log, err)
   }

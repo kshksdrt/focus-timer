@@ -11,6 +11,7 @@
 				<p>{{ timer.count }}</p>
 			</div>
 		</div>
+		<p class="m0 text-medium text-dim">No activity.</p>
 	</div>
 	<!-- <p>{{ computes }}</p> -->
 </template>
