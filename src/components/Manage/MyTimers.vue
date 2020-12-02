@@ -3,7 +3,7 @@
 		<div class="flex-between">
 			<h2 class="text-primary pb2">My Timers</h2>
 			<button class="bg-none icon" @click="toggleEditing()">
-				<i class="material-icons light text-largest">
+				<i class="material-icons light text-larger">
 					{{ editing ? "done" : "edit" }}
 				</i>
 			</button>

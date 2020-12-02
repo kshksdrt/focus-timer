@@ -1,10 +1,10 @@
 <template>
 	<div class="pb12">
 		<transition name="fade">
-			<div class="mt8 full-width">
+			<div class="mt8 mb6 full-width">
 				<Bar :currentSegment="currentSegment" />
 				<div
-					class="flex-center full-width rounded-full no-select bg-bg-1 mt12 mb4"
+					class="flex-center full-width rounded-full no-select bg-bg-1 mt12 mb8"
 				>
 					<h1 class="text-center">{{ countdown }}</h1>
 				</div>
@@ -13,7 +13,9 @@
 					<!-- Go to next segment title -->
 					<div v-if="isRemaining" class="flex-center">
 						<span class="text-center text-small">
-							{{ "Press &nbsp;&nbsp;" }} <SvgIcon name="next" />{{
+							{{ "Press &nbsp;&nbsp;" }}
+							<i class="material-icons light">{{ primaryButton }}</i
+							>{{
 								"&nbsp;&nbsp; to start " + timer.spec[currentSegment + 1].name
 							}}
 						</span>
@@ -21,21 +23,26 @@
 					<!-- Start next session title -->
 					<div v-if="!isRemaining" class="flex-center">
 						<span class="text-center text-small">
-							{{ "Press &nbsp;&nbsp;" }} <SvgIcon name="restart" />{{
-								"&nbsp;&nbsp; to start next session"
-							}}
+							{{ "Press &nbsp;&nbsp;" }}
+							<i class="material-icons light">{{ primaryButton }}</i
+							>{{ "&nbsp;&nbsp; to start next session" }}
 						</span>
 					</div>
 				</div>
+				<!-- Controls -->
 				<div class="flex-center">
 					<button
-						class="mr2 p5 rounded-full text-light"
+						class="rounded-full icon size-largest mr4"
 						@click="primaryButtonClickHandler"
 					>
-						<SvgIcon :name="primaryButton" />
+						<i class="material-icons light">{{ primaryButton }}</i>
 					</button>
-					<button class="mr2 p5 rounded-full text-light" @click="stopTimer">
-						<SvgIcon name="stop" />
+					<button
+						class="rounded-full icon size-larger"
+						v-if="timerState === 'playing'"
+						@click="stopTimer"
+					>
+						<i class="material-icons light">stop</i>
 					</button>
 				</div>
 			</div>
@@ -68,18 +75,15 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, watchEffect, watch } from "vue";
-import SvgIcon from "@/components/BaseComponents/SvgIcon.vue";
 import NotifyModal from "@/components/Timer/NotifyModal.vue";
 import Bar from "@/components/Timer/Bar.vue";
-
-import { Timer, TimerBarSegment, Spec } from "@/scripts/types/timer.ts";
 import { get } from "@/scripts/store/states/timer";
 import { mutate as mutateHistory } from "@/scripts/store/states/history";
 import { data, actions } from "@/scripts/core/useTimer";
 
 export default defineComponent({
 	name: "Timer",
-	components: { SvgIcon, NotifyModal, Bar },
+	components: { NotifyModal, Bar },
 	setup() {
 		const timer = get.currentTimer;
 		const currentMinute = data.current;
@@ -88,16 +92,15 @@ export default defineComponent({
 		const timerVisibility = ref(false);
 		if (get.currentTimer.value.id) {
 			timerVisibility.value = true;
-			generateBar(timer.value);
 		}
 
 		const primaryButton = computed(() => {
-			if (timerState.value === "stopped") return "play";
+			if (timerState.value === "stopped") return "play_arrow";
 			if (timerState.value === "playing") return "pause";
-			if (timerState.value === "paused") return "play";
+			if (timerState.value === "paused") return "play_arrow";
 			if (timerState.value === "waiting") {
-				if (!isRemaining.value) return "restart";
-				return "next";
+				if (!isRemaining.value) return "refresh";
+				return "redo";
 			}
 		});
 
@@ -162,38 +165,6 @@ export default defineComponent({
 
 		const currentSegment = ref(0);
 
-		const bar = ref([] as TimerBarSegment[]);
-
-		function generateBar(val: Timer) {
-			if (!val?.spec || !bar?.value || !currentSegment?.value) return;
-
-			const totalMinutes = val.spec.reduce(
-				(acc: number, current: Spec) => acc + current.duration,
-				0
-			);
-
-			const newBar: TimerBarSegment[] = val.spec.reduce(
-				(acc: TimerBarSegment[], current: Spec, i: number) => {
-					const { name, duration } = current;
-					const newSegment: TimerBarSegment = {
-						name,
-						duration,
-						isCurrent: currentSegment?.value === i,
-						css: {
-							width: Math.floor((duration / totalMinutes) * 100) + "%",
-						},
-					};
-					acc.push(newSegment);
-					return acc;
-				},
-				[]
-			);
-
-			newBar.forEach((each) => {
-				bar.value.push(each);
-			});
-		}
-
 		const countdown = computed(() => {
 			if (timerVisibility.value === false) return "00 : 00";
 			const totalSeconds = data.secondsLeft.value;
@@ -203,20 +174,11 @@ export default defineComponent({
 			return `${addZero(min)} : ${addZero(sec)}`;
 		});
 
-		function getClass(condition: boolean) {
-			const x = {
-				"bg-bg-3": condition ? false : true,
-				"bg-primary": condition ? true : false,
-			};
-			return x;
-		}
-
 		watchEffect(() => {
 			if (timer.value.spec) {
 				timerVisibility.value = true;
 			} else {
 				timerVisibility.value = false;
-				generateBar(timer.value);
 			}
 		});
 
@@ -272,10 +234,8 @@ export default defineComponent({
 			title,
 			message,
 			countdown,
-			bar,
 			currentSegment,
 			currentMinute,
-			getClass,
 			startTimer,
 			stopTimer,
 			primaryButton,

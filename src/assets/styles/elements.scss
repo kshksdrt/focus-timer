@@ -24,12 +24,15 @@ button {
 	padding: 0.6rem;
 	border: 0px;
 	border-radius: 3px;
-	font-size: 12px;
-	font-weight: 700;
 	// text-transform: uppercase;
 	outline: none;
 	cursor: pointer;
-	transition: all 100ms;
+	transition: background 0ms;
+
+	.p {
+		font-size: 12px;
+		font-weight: 700;
+	}
 
 	.text-light {
 		color: white;
@@ -76,10 +79,6 @@ button.icon:active {
 button.icon:active {
 	background: var(--bg-4);
 	border-radius: 1000px;
-}
-
-.i {
-	transition: all 120ms;
 }
 
 .card {
