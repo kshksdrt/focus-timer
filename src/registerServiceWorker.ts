@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-// v0.2.1
+// v0.2.11
 
 import { register } from 'register-service-worker'
 
