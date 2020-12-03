@@ -16,9 +16,9 @@
 	--gray4: #828282;
 	--gray5: #464646;
 	--gray6: #353535;
-	--gray7: #222222;
-	--gray8: #1d1d1d;
-	--gray9: #131313;
+	--gray7: #1d1d1d;
+	--gray8: #101010;
+	--gray9: #000000;
 	--primary: #4959c5;
 	--secondary: #ffb300;
 	--bg-absolute: #000000;
@@ -34,7 +34,7 @@
 	--bg-8: var(--gray1);
 	--bg-9: var(--gray0);
 	--text: var(--gray0);
-	font-family: "Ubuntu", monospace;
+	font-family: "Ubuntu";
 }
 
 #app {
@@ -113,13 +113,13 @@ h2 {
 }
 
 *::-webkit-scrollbar {
-	width: 0.3rem;
-	height: 0.3rem;
+	width: 0rem;
+	height: 0rem;
 }
 
 *::-webkit-scrollbar-track {
 	background: var(--bg-1);
-	border: 1px solid var(--bg-2);
+	border: 0px solid var(--bg-2);
 }
 
 *::-webkit-scrollbar-thumb {

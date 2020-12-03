@@ -1,36 +1,18 @@
-import { Count, HistoryEntry } from "@/scripts/types/history";
-import { computed, ref } from 'vue';
+import { CountQueryResult, HistoryEntry } from "@/scripts/types/history";
+import { computed, ref, watchEffect } from 'vue';
 
-import { storeHistoryToLs } from '../ls';
+import { storeHistoryToLs } from '@/scripts/store/scripts/ls';
+import { getAllTimersCounts } from '@/scripts/store/scripts/queries';
 
 // State
 const history = ref([] as HistoryEntry[])
+const todaysSessions = ref([] as CountQueryResult[])
 
-// Computed
-const todaysSessions = computed((): Count[] => {
-  const fullHistory: HistoryEntry[] = get.history.value;
-  const today = new Date();
-  const result = [] as Count[];
-
-  fullHistory.reverse().some((current) => {
-    const currentItemDate = new Date(current.ts);
-    if (
-      currentItemDate.getDate() === today.getDate() &&
-      currentItemDate.getMonth() === today.getMonth() &&
-      currentItemDate.getFullYear() === today.getFullYear()
-    ) {
-      const existingCount = result.find((x) => x.name === current.name);
-      if (existingCount) {
-        existingCount.count++;
-      } else {
-        result.push({ name: current.name, count: 1 });
-      }
-      return false;
-    }
-    return true;
-  });
-  return result;
-});
+// Watchers
+watchEffect(() => {
+  const today = new Date()
+  todaysSessions.value = getAllTimersCounts(history.value, "day", today)
+})
 
 // Mutations
 function newEntry(name: string, duration: number) {
@@ -54,7 +36,7 @@ function importFromLs(library: HistoryEntry[]) {
 // Exports
 export const get = {
   history: computed(() => history.value),
-  todaysSessions
+  todaysSessions,
 }
 
 export const mutate = {

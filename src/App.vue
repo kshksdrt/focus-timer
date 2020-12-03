@@ -2,6 +2,7 @@
 	<div id="appContent">
 		<MainPanel v-if="currentView === 'home'" />
 		<ManageTimers v-if="currentView === 'manage'" />
+		<StatsViewer v-if="currentView === 'stats'" />
 	</div>
 	<div id="navbarMobile" class="flex-even">
 		<button
@@ -27,10 +28,11 @@ import { AppView } from "./scripts/types/app";
 // Components
 import MainPanel from "@/components/Views/MainPanel.vue";
 import ManageTimers from "@/components/Views/ManageTimers.vue";
+import StatsViewer from "@/components/Views/StatsViewer.vue";
 
 export default defineComponent({
 	name: "App",
-	components: { MainPanel, ManageTimers },
+	components: { MainPanel, ManageTimers, StatsViewer },
 	data() {
 		return {
 			buttons: [

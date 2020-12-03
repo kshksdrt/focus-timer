@@ -1,5 +1,5 @@
 import { Timer } from "@/scripts/types/timer";
-import { getHistoryFromLs, getSettingsFromLs, getTimersFromLs } from "@/scripts/store/ls";
+import { getHistoryFromLs, getSettingsFromLs, getTimersFromLs } from "@/scripts/store/scripts/ls";
 import { mutate as mutateTimer } from "@/scripts/store/states/timer";
 import { mutate as mutateHistory } from "@/scripts/store/states/history";
 import { mutate as mutateApp } from "@/scripts/store/states/app";

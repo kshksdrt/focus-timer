@@ -4,7 +4,7 @@
 			v-for="(segment, i) in bar"
 			:key="i"
 			:style="segment.css"
-			class="relative ml1 mr1 pt1 rounded-full transitions-all"
+			class="relative ml1 mr1 pt1 rounded-full transition-all"
 			:class="getClass(segment.isCurrent)"
 		>
 			<div class="absolute label text-smallest">
