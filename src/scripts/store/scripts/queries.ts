@@ -1,4 +1,4 @@
-import { CountQueryResult, DurationQueryResult, Filter, HistoryEntry } from "@/scripts/types/history";
+import { CountQueryResult, Filter, HistoryEntry } from "@/scripts/types/history";
 import { get } from "@/scripts/store/states/history.ts";
 
 // @ts-ignore
@@ -53,19 +53,6 @@ export function getAllTimersDurations(history: HistoryEntry[], queryFilter: Filt
     if (queryFilterOperator(queryFilter, currentItemDate, queryDate)) return acc+current.duration
     return acc;
   }, 0);
-}
-
-export function getCountDaysOfMonth(timerName: string) {
-  const data = get.history.value;
-  const x = []
-  const y = []
-
-  for (let i = 30; i >= 0; i--) {
-    const result = getOneCount(data, 'day', getDay({days: -i, months: 0}), timerName)
-    x.push(getDay({days: -i, months: 0}).getDate())
-    y.push(result)
-  }
-  return { x, y }
 }
 
 export function getDurationDaysOfWeek() {

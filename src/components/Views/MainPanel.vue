@@ -1,8 +1,11 @@
 <template>
 	<div class="flex-column-start full-width">
-		<Timer v-if="timerSelected" id="timer" />
-		<SelectTimer v-if="!timerSelected" id="selectTimer" />
-		<Today id="today" />
+		<transition name="fade" mode="out-in">
+			<component :is="view" />
+		</transition>
+		<transition name="fade" mode="out-in">
+			<Today />
+		</transition>
 	</div>
 </template>
 
@@ -20,7 +23,9 @@ export default defineComponent({
 	components: { Timer, SelectTimer, Today },
 	setup() {
 		return {
-			timerSelected: computed(() => get.timerSelected?.value === true),
+			view: computed(() =>
+				get.timerSelected?.value === true ? "Timer" : "SelectTimer"
+			),
 		};
 	},
 });

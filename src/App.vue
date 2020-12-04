@@ -1,10 +1,10 @@
 <template>
 	<div id="appContent">
-		<MainPanel v-if="currentView === 'home'" />
-		<ManageTimers v-if="currentView === 'manage'" />
-		<StatsViewer v-if="currentView === 'stats'" />
+		<transition name="fade" mode="out-in">
+			<component :is="view[currentView]" />
+		</transition>
 	</div>
-	<div id="navbarMobile" class="flex-even">
+	<div :id="type === 'xs' ? 'navbarMobile' : 'navbar'">
 		<button
 			class="bg-none icon"
 			v-for="button in buttons"
@@ -24,6 +24,9 @@ import { defineComponent } from "vue";
 // Scripts
 import appState from "@/scripts/store/states/app";
 import { AppView } from "./scripts/types/app";
+
+// @ts-ignore
+import useBreakpoints from "./scripts/core/useBreakpoints.js";
 
 // Components
 import MainPanel from "@/components/Views/MainPanel.vue";
@@ -53,9 +56,16 @@ export default defineComponent({
 					icon: "settings",
 				},
 			],
+			view: {
+				home: "MainPanel",
+				manage: "ManageTimers",
+				stats: "StatsViewer",
+			},
 		};
 	},
 	setup() {
+		const { type } = useBreakpoints();
+
 		function isSelected(target: AppView) {
 			return {
 				primary: appState.get.currentView.value === target,
@@ -71,6 +81,7 @@ export default defineComponent({
 			currentView: appState.get.currentView,
 			isSelected,
 			navigate,
+			type,
 		};
 	},
 });

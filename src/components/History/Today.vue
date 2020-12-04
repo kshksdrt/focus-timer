@@ -1,5 +1,5 @@
 <template>
-	<div class="card-border full-width">
+	<div class="card-border full-width" id="today">
 		<h4 class="text-primary pb2">Today</h4>
 		<div
 			v-for="timer in todaysSessions"

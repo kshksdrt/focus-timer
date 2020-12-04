@@ -1,7 +1,6 @@
 import Chart from "chart.js";
 
 export function createGraph({ x, y }, type) {
-	console.log({ x, y });
 	const chartCanvas = document?.getElementById("chartCanvas")?.getContext("2d");
 
 	Chart.defaults.global.defaultFontSize = 11;
@@ -12,7 +11,7 @@ export function createGraph({ x, y }, type) {
 			labels: x,
 			datasets: [
 				{
-					label: "Minutes worked",
+					label: "Minutes spent working",
 					data: y,
 					backgroundColor: Array(x.length).fill("rgba(73, 89, 197, 0.6)"),
 					borderColor: Array(x.length).fill("rgba(73, 89, 197, 1.0)"),

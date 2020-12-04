@@ -19,15 +19,7 @@
 </template>
 
 <script lang="ts">
-import {
-	defineComponent,
-	onMounted,
-	reactive,
-	ref,
-	toRefs,
-	watch,
-	watchEffect,
-} from "vue";
+import { defineComponent, onMounted, ref, watchEffect } from "vue";
 
 import { View } from "@/scripts/types/stats.ts";
 import {
@@ -57,8 +49,6 @@ export default defineComponent({
 		];
 
 		const currentView = ref("month" as View);
-		const timers = ref([] as string[]);
-		const timer = ref("" as string);
 
 		function getClass(view: View) {
 			return {
