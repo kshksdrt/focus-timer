@@ -21,7 +21,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import { get } from "@/scripts/store/states/history";
+import { get } from "@/store/states/history";
 
 export default defineComponent({
 	name: "Today",

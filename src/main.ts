@@ -1,10 +1,10 @@
-import './scripts/core/dateMod.js'
+import '@/core/dateMod.js'
 
 import { createApp } from 'vue'
 
 import App from './App.vue'
 import './registerServiceWorker'
-import initialize from './scripts/core/initialize'
+import initialize from '@/core/initialize'
 
 initialize()
 

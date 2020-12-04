@@ -1,4 +1,4 @@
-import { AppView, Settings } from '@/scripts/types/app';
+import { AppView, Settings } from '@//types/app';
 import { computed, ref } from "vue";
 import { storeSettingsToLs } from '../scripts/ls';
 

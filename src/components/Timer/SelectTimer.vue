@@ -32,9 +32,9 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 
-import { get, mutate } from "@/scripts/store/states/timer";
-import app from "@/scripts/store/states/app";
-import { get as getHistory } from "@/scripts/store/states/history";
+import { get, mutate } from "@/store/states/timer";
+import app from "@/store/states/app";
+import { get as getHistory } from "@/store/states/history";
 
 export default defineComponent({
 	name: "SelectTimer",

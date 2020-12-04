@@ -77,9 +77,9 @@
 import { defineComponent, ref, computed, watchEffect, watch } from "vue";
 import NotifyModal from "@/components/Timer/NotifyModal.vue";
 import Bar from "@/components/Timer/Bar.vue";
-import { get } from "@/scripts/store/states/timer";
-import { mutate as mutateHistory } from "@/scripts/store/states/history";
-import { data, actions } from "@/scripts/core/useTimer";
+import { get } from "@/store/states/timer";
+import { mutate as mutateHistory } from "@/store/states/history";
+import { data, actions } from "@//core/useTimer";
 
 export default defineComponent({
 	name: "Timer",

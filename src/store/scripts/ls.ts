@@ -1,5 +1,5 @@
-import { Settings } from '@/scripts/types/app';
-import { Timer } from "@/scripts/types/timer";
+import { Settings } from '@//types/app';
+import { Timer } from "@//types/timer";
 import { HistoryEntry } from '../../types/history';
 
 const LS_KEYS = {

@@ -13,7 +13,7 @@ import { defineComponent } from "vue";
 
 import ToggleButton from "@/components/BaseComponents/ToggleButton.vue";
 
-import { get, mutate } from "@/scripts/store/states/app";
+import { get, mutate } from "@/store/states/app";
 
 export default defineComponent({
 	name: "Settings",

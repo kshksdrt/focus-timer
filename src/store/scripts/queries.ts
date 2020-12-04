@@ -1,8 +1,8 @@
-import { CountQueryResult, Filter, HistoryEntry } from "@/scripts/types/history";
-import { get } from "@/scripts/store/states/history.ts";
+import { CountQueryResult, Filter, HistoryEntry } from "@//types/history";
+import { get } from "@/store/states/history.ts";
 
 // @ts-ignore
-import { getDay } from "@/scripts/core/dateFunctions.js"
+import { getDay } from "@//core/dateFunctions.js"
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 

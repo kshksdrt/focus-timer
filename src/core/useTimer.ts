@@ -1,5 +1,5 @@
 import { computed, reactive } from "vue";
-import { CountdownState } from '../types/timer';
+import { CountdownState } from '@/types/timer.ts';
 
 const timer = reactive({
   current: 0,

@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { get, mutate } from "@/scripts/store/states/timer";
+import { get, mutate } from "@/store/states/timer";
 
 export default defineComponent({
 	name: "External",

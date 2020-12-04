@@ -22,12 +22,12 @@
 import { defineComponent } from "vue";
 
 // Scripts
-import appState from "@/scripts/store/states/app";
-import { AppView } from "./scripts/types/app";
-import { get } from "@/scripts/store/states/app";
+import appState from "@/store/states/app";
+import { AppView } from "@/types/app";
+import { get } from "@/store/states/app";
 
 // @ts-ignore
-import useBreakpoints from "./scripts/core/useBreakpoints.js";
+import useBreakpoints from "@/core/useBreakpoints.js";
 
 // Components
 import MainPanel from "@/components/Views/MainPanel.vue";

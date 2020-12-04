@@ -27,14 +27,14 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, watchEffect } from "vue";
 
-import { Dataset, View } from "@/scripts/types/stats.ts";
+import { Dataset, View } from "@//types/stats.ts";
 import {
 	getDurationDaysOfWeek,
 	getDurationDaysOfMonth,
 	getDurationMonthsOfYear,
-} from "@/scripts/store/scripts/queries";
+} from "@/store/scripts/queries";
 
-const { createGraph } = require("@/scripts/core/chartFunctions.js");
+const { createGraph } = require("@//core/chartFunctions.js");
 
 export default defineComponent({
 	name: "StatsViewer",
