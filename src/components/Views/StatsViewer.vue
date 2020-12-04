@@ -11,24 +11,30 @@
 				<p class="text-small text-center m2">{{ text }}</p>
 			</div>
 		</div>
-		<div class="full-width mt12" id="countStats">
+		<div class="full-width mt12">
 			<canvas id="chartCanvas"></canvas>
 		</div>
-		<div class="full-width" id="durationStats"></div>
+		<div class="full-width mt12 p2">
+			<h4 class="text-primary pb2">Summary</h4>
+			<div v-for="({ name, value }, i) in stats" :key="i" class="flex-between">
+				<p class="text-medium">{{ name }}</p>
+				<p class="text-medium">{{ value }}</p>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watchEffect } from "vue";
 
-import { View } from "@/scripts/types/stats.ts";
+import { Dataset, View } from "@//types/stats.ts";
 import {
 	getDurationDaysOfWeek,
 	getDurationDaysOfMonth,
 	getDurationMonthsOfYear,
-} from "@/scripts/store/scripts/queries";
+} from "@/store/scripts/queries";
 
-const { createGraph } = require("@/scripts/core/chartFunctions.js");
+const { createGraph } = require("@//core/chartFunctions.js");
 
 export default defineComponent({
 	name: "StatsViewer",
@@ -48,7 +54,7 @@ export default defineComponent({
 			},
 		];
 
-		const currentView = ref("month" as View);
+		const currentView = ref("week" as View);
 
 		function getClass(view: View) {
 			return {
@@ -62,12 +68,21 @@ export default defineComponent({
 		}
 
 		function drawGraph() {
-			if (currentView.value === "week")
-				createGraph(getDurationDaysOfWeek(), "bar");
-			if (currentView.value === "month")
-				createGraph(getDurationDaysOfMonth(), "line");
-			if (currentView.value === "year")
-				createGraph(getDurationMonthsOfYear(), "bar");
+			if (currentView.value === "week") {
+				const dataset: Dataset = getDurationDaysOfWeek();
+				createGraph(dataset, "bar");
+				createStats(dataset, "week");
+			}
+			if (currentView.value === "month") {
+				const dataset: Dataset = getDurationDaysOfMonth();
+				createGraph(dataset, "line");
+				createStats(dataset, "week");
+			}
+			if (currentView.value === "year") {
+				const dataset: Dataset = getDurationMonthsOfYear();
+				createGraph(dataset, "bar");
+				createStats(dataset, "week");
+			}
 		}
 
 		const mounted = ref(false);
@@ -80,10 +95,61 @@ export default defineComponent({
 			drawGraph();
 		});
 
+		const stats = ref([] as { name: string; value: string }[]);
+
+		function createStats(dataset: Dataset, type: View) {
+			stats.value = [];
+			if (type === "week" || type === "month") {
+				// Most productive day
+				const highestMins = Math.max(...dataset.y);
+				const index = () => {
+					let res = 0;
+					dataset.y.some((val, i) => {
+						if (val === highestMins) {
+							res = i;
+							return true;
+						}
+						return false;
+					});
+					return res;
+				};
+				const day = dataset.x[index()];
+				if (typeof day === "string") return;
+				const dayTh = (d: number) =>
+					d === 1 ? "1st" : d === 2 ? "2nd" : d === 3 ? "3rd" : `${d}th`;
+				stats.value.push({
+					name: "Most productive day",
+					value: `${dayTh(day)}`,
+				});
+
+				// Mean
+				const total = dataset.y.reduce((a, c) => a + c, 0);
+				const mean = Math.floor(total / dataset.y.length);
+				stats.value.push({
+					name: "Average minutes per day",
+					value: `${mean} mins`,
+				});
+
+				// SD
+				const sumOfSquares = dataset.y.reduce((acc, curr) => {
+					return Math.pow(curr, 2) + acc;
+				}, 0);
+				const sd = Math.floor(Math.sqrt(sumOfSquares / dataset.y.length));
+				stats.value.push({
+					name: "Standard deviation",
+					value: `${sd} mins`,
+				});
+			}
+			if (type === "year") {
+				console.log("year");
+			}
+		}
+
 		return {
 			views,
 			getClass,
 			changeView,
+			stats,
 		};
 	},
 });

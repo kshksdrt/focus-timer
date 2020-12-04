@@ -12,7 +12,7 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 
-import { get } from "@/scripts/store/states/timer";
+import { get } from "@/store/states/timer";
 
 import Timer from "@/components/Timer/Timer.vue";
 import SelectTimer from "@/components/Timer/SelectTimer.vue";

@@ -17,8 +17,8 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { get } from "@/scripts/store/states/timer";
-import { Spec, TimerBarSegment } from "@/scripts/types/timer";
+import { get } from "@/store/states/timer";
+import { Spec, TimerBarSegment } from "@//types/timer";
 
 export default defineComponent({
 	name: "Bar",

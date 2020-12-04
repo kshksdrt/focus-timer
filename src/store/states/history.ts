@@ -1,8 +1,8 @@
-import { CountQueryResult, HistoryEntry } from "@/scripts/types/history";
+import { CountQueryResult, HistoryEntry } from "@//types/history";
 import { computed, ref, watchEffect } from 'vue';
 
-import { storeHistoryToLs } from '@/scripts/store/scripts/ls';
-import { getAllTimersCounts } from '@/scripts/store/scripts/queries';
+import { storeHistoryToLs } from '@/store/scripts/ls';
+import { getAllTimersCounts } from '@/store/scripts/queries';
 
 // State
 const history = ref([] as HistoryEntry[])

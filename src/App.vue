@@ -1,5 +1,5 @@
 <template>
-	<div id="appContent">
+	<div id="appContent" :class="getAppClass()">
 		<transition name="fade" mode="out-in">
 			<component :is="view[currentView]" />
 		</transition>
@@ -22,20 +22,22 @@
 import { defineComponent } from "vue";
 
 // Scripts
-import appState from "@/scripts/store/states/app";
-import { AppView } from "./scripts/types/app";
+import appState from "@/store/states/app";
+import { AppView } from "@/types/app";
+import { get } from "@/store/states/app";
 
 // @ts-ignore
-import useBreakpoints from "./scripts/core/useBreakpoints.js";
+import useBreakpoints from "@/core/useBreakpoints.js";
 
 // Components
 import MainPanel from "@/components/Views/MainPanel.vue";
 import ManageTimers from "@/components/Views/ManageTimers.vue";
 import StatsViewer from "@/components/Views/StatsViewer.vue";
+import Settings from "@/components/Views/Settings.vue";
 
 export default defineComponent({
 	name: "App",
-	components: { MainPanel, ManageTimers, StatsViewer },
+	components: { MainPanel, ManageTimers, StatsViewer, Settings },
 	data() {
 		return {
 			buttons: [
@@ -60,6 +62,7 @@ export default defineComponent({
 				home: "MainPanel",
 				manage: "ManageTimers",
 				stats: "StatsViewer",
+				settings: "Settings",
 			},
 		};
 	},
@@ -77,11 +80,18 @@ export default defineComponent({
 			appState.mutate.changeView(target);
 		}
 
+		function getAppClass() {
+			return {
+				grayscale: get?.settings?.value?.grayscaleMode,
+			};
+		}
+
 		return {
 			currentView: appState.get.currentView,
 			isSelected,
 			navigate,
 			type,
+			getAppClass,
 		};
 	},
 });
