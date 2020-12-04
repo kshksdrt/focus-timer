@@ -1,11 +1,14 @@
 import { AppView, Settings } from '@/scripts/types/app';
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { storeSettingsToLs } from '../scripts/ls';
 
 // State
 const userNew = ref(false)
 const currentView = ref("home" as AppView)
+
 const settings = ref({
   lastUsedTimer: "",
+  grayscaleMode: false,
 } as Settings)
 
 // Mutations
@@ -23,16 +26,28 @@ function importSettingsFromLs(lsValue: Settings) {
   }
 }
 
+function toggleGrayscaleMode() {
+  settings.value.grayscaleMode = !settings.value.grayscaleMode
+  exportSettingsToLs(settings.value)
+}
+
+// LocalStorage
+function exportSettingsToLs(val: Settings) {
+  storeSettingsToLs(val)
+}
+
 // Exports
 export const get = {
   userNew,
   currentView,
-  settings,
+  settings: computed(() => settings.value),
 }
 
 export const mutate = {
   userIsNew,
   changeView,
+  toggleGrayscaleMode,
+  storeSettingsToLs,
   importSettingsFromLs,
 }
 

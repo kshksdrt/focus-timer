@@ -55,7 +55,7 @@
 	height: 100vh;
 	width: 100vw;
 	overflow-x: hidden;
-	overflow-y: scroll;
+	overflow-y: hidden;
 }
 
 * {
@@ -128,4 +128,8 @@ h2 {
 
 .mono {
 	font-family: "Fira Code", monospace;
+}
+
+.grayscale {
+	filter: grayscale(100%);
 }

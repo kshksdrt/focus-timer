@@ -1,3 +1,4 @@
+import { Settings } from '@/scripts/types/app';
 import { Timer } from "@/scripts/types/timer";
 import { HistoryEntry } from '../../types/history';
 
@@ -53,7 +54,7 @@ export function getHistoryFromLs () {
   return result
 }
 
-export function storeSettingsToLs (payload: HistoryEntry[]) {
+export function storeSettingsToLs (payload: Settings) {
   const start = Date.now()
   try {
     localStorage.setItem(LS_KEYS.settings, JSON.stringify(payload))
