@@ -4,7 +4,13 @@ export interface HistoryEntry {
   duration: number;
 }
 
-export interface Count {
+export type Filter = "day" | "month" | "year";
+export interface CountQueryResult {
   name: string;
   count: number;
+}
+
+export interface DurationQueryResult {
+  name: string;
+  duration: number;
 }

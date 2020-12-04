@@ -1,5 +1,5 @@
 <template>
-	<div class="pb12">
+	<div class="pb12" id="timer">
 		<transition name="fade">
 			<div class="mt8 mb6 full-width">
 				<Bar :currentSegment="currentSegment" />

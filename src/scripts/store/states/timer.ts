@@ -2,7 +2,7 @@ import { ref } from "vue";
 // import { v4 as uuid } from "uuid";
 
 import { Timer } from "@/scripts/types/timer";
-import { storeTimersToLs } from '../ls';
+import { storeTimersToLs } from '@/scripts/store/scripts/ls';
 
 // State
 const timers = ref([] as Timer[])

@@ -9,25 +9,23 @@
 			</button>
 		</div>
 		<transition-group name="fade-slow">
-			<div>
-				<div v-for="timer in myTimers" :key="timer.id">
-					<div class="card-alt">
-						<div class="flex-between">
-							<p class="text-bold m0">{{ timer.name }}</p>
-							<button
-								v-if="editing"
-								class="bg-none icon"
-								@click="removeTimer(timer.id)"
-							>
-								<i class="material-icons light">delete</i>
-							</button>
-						</div>
+			<div v-for="timer in myTimers" :key="timer.id">
+				<div class="card-alt">
+					<div class="flex-between">
+						<p class="text-bold m0">{{ timer.name }}</p>
+						<button
+							v-if="editing"
+							class="bg-none icon"
+							@click="removeTimer(timer.id)"
+						>
+							<i class="material-icons light">delete</i>
+						</button>
 					</div>
 				</div>
-				<p v-if="myTimers.length === 0" class="text-medium text-dim">
-					You have not added any timers.
-				</p>
 			</div>
+			<p v-if="myTimers.length === 0" class="text-medium text-dim">
+				You have not added any timers.
+			</p>
 		</transition-group>
 	</div>
 </template>

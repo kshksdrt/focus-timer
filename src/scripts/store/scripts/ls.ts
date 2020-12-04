@@ -1,5 +1,5 @@
 import { Timer } from "@/scripts/types/timer";
-import { HistoryEntry } from '../types/history';
+import { HistoryEntry } from '../../types/history';
 
 const LS_KEYS = {
   saved: 'focus-timer.library',

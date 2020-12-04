@@ -547,8 +547,12 @@
 	color: var(--primary);
 }
 
-.transitions-all {
+.transition-all {
 	transition: all 100ms;
+}
+
+.transition-all-slow {
+	transition: all 150ms;
 }
 
 .uppercase {
