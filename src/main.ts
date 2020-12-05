@@ -1,5 +1,3 @@
-import '@/core/dateMod.js'
-
 import { createApp } from 'vue'
 
 import App from './App.vue'

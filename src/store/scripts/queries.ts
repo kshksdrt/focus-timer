@@ -2,7 +2,7 @@ import { CountQueryResult, Filter, HistoryEntry } from "@//types/history";
 import { get } from "@/store/states/history.ts";
 
 // @ts-ignore
-import { getDay } from "@//core/dateFunctions.js"
+import { getDaysAgo } from "@/core/dateFunctions.ts"
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -61,8 +61,8 @@ export function getDurationDaysOfWeek() {
   const y = []
 
   for (let i = 7; i >= 0; i--) {
-    const result = getAllTimersDurations(data, 'day', getDay({days: -i}))
-    x.push(getDay({days: -i, months: 0}).getDate())
+    const result = getAllTimersDurations(data, 'day', getDaysAgo(i))
+    x.push(getDaysAgo(i).getDate())
     y.push(result)
   }
   return { x, y }
@@ -74,8 +74,8 @@ export function getDurationDaysOfMonth() {
   const y = []
 
   for (let i = 30; i >= 0; i--) {
-    const result = getAllTimersDurations(data, 'day', getDay({days: -i}))
-    x.push(getDay({days: -i, months: 0}).getDate())
+    const result = getAllTimersDurations(data, 'day', getDaysAgo(i))
+    x.push(getDaysAgo(i).getDate())
     y.push(result)
   }
   return { x, y }

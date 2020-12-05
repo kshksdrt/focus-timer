@@ -27,6 +27,10 @@
 				You have not added any timers.
 			</p>
 		</transition-group>
+		<div class="flex-start flex-align-center long-button no-select mb3">
+			<i class="material-icons">add_circle</i>
+			<p class="text-medium m0 ml4">Build a timer</p>
+		</div>
 	</div>
 </template>
 
