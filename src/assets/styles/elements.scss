@@ -183,8 +183,9 @@ button.icon:active {
 .long-button {
 	background: none;
 	padding: 0.5rem 1rem;
-	transition: all 100ms ease;
 	border-radius: 4px;
+	cursor: pointer;
+	transition: all 100ms ease;
 }
 
 .long-button:hover {

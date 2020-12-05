@@ -20,7 +20,7 @@ function changeView(view: AppView) {
   currentView.value = view
 }
 
-function importSettingsFromLs(lsValue: Settings) {
+function batchImport(lsValue: Settings) {
   for (const key in lsValue) {
     settings.value[key] = lsValue[key]
   }
@@ -48,7 +48,7 @@ export const mutate = {
   changeView,
   toggleGrayscaleMode,
   storeSettingsToLs,
-  importSettingsFromLs,
+  batchImport,
 }
 
 export default { get, mutate }

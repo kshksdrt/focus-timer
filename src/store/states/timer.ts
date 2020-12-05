@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { computed, ref } from "vue";
 // import { v4 as uuid } from "uuid";
 
 import { Timer } from "@//types/timer";
@@ -50,16 +50,16 @@ function exportToLs(timers: Timer[]) {
   storeTimersToLs(timers)
 }
 
-function importFromLs(library: Timer[]) {
+function batchImport(library: Timer[]) {
   timers.value = library
 }
 
 // Exports
 export const get = {
-  timers,
-  externals,
-  currentTimer,
-  timerSelected,
+  timers: computed(() => timers.value),
+  externals: computed(() => externals.value),
+  currentTimer: computed(() => currentTimer.value),
+  timerSelected: computed(() => timerSelected.value),
 }
 
 export const mutate = {
@@ -67,7 +67,7 @@ export const mutate = {
   removeTimer,
   selectTimer,
   importTimer,
-  importFromLs,
+  batchImport,
 }
 
 export default { get, mutate }
