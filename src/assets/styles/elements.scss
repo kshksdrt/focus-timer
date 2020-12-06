@@ -1,21 +1,23 @@
 input {
-	background: var(--bg-0);
-	padding: 0.8rem;
+	background: none;
 	border: 0px;
-	border-radius: 5px;
+	border-bottom: 1px solid var(--bg-3);
+	padding: 0.8rem 0 0.5rem 0;
+	margin: 0;
 	outline: none;
 	font-size: 14px;
-	font-weight: 400;
+	font-weight: 500;
 	color: white;
-	transition: background 80ms;
+	transition: all 200ms;
 }
 
 input:hover {
-	filter: brightness(90%);
+	border-bottom: 1px solid var(--bg-4);
 }
 
-input:active {
-	filter: brightness(80%);
+input:active,
+input:focus {
+	border-bottom: 1px solid var(--primary);
 }
 
 button {
@@ -136,6 +138,7 @@ button.icon:active {
 	position: fixed;
 	top: 50%;
 	left: 50%;
+	max-width: 93vw;
 	transform: translate(-50%, -50%);
 	background: var(--bg-1);
 	color: var(--text);
@@ -178,4 +181,20 @@ button.icon:active {
 		margin-left: 50%;
 		margin-top: 50%;
 	}
+}
+
+.long-button {
+	background: none;
+	padding: 0.5rem 1rem;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: all 100ms ease;
+}
+
+.long-button:hover {
+	background: var(--bg-3);
+}
+
+.long-button:active {
+	background: var(--bg-4);
 }

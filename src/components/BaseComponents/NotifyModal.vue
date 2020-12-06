@@ -2,13 +2,17 @@
 	<div>
 		<div class="modal-overlay" @click="onClose" />
 		<div class="modal modal-small">
-			<h1 class="capitalize mb8">
-				<i class="material-icons mr3">{{ iconValid ? titleIcon : "work" }}</i>
-				{{ title }}
-			</h1>
+			<div class="flex-start flex-align-center mb8">
+				<i class="material-icons text-xxl mr4">{{
+					iconValid ? titleIcon : "work"
+				}}</i>
+				<h3 class="capitalize">
+					{{ title }}
+				</h3>
+			</div>
 			<p>{{ message }}</p>
 			<button
-				class="full-width bg-secondary text-dark no-transform mt6"
+				class="full-width bg-secondary text-dark no-transform mt6 text-bold"
 				@click="onProceedClicked"
 			>
 				{{ primaryButtonText }}

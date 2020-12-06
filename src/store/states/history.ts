@@ -29,19 +29,19 @@ function exportToLs(history: HistoryEntry[]) {
   storeHistoryToLs(history)
 }
 
-function importFromLs(library: HistoryEntry[]) {
+function batchImport(library: HistoryEntry[]) {
   history.value = library
 }
 
 // Exports
 export const get = {
   history: computed(() => history.value),
-  todaysSessions,
+  todaysSessions: computed(() => todaysSessions.value),
 }
 
 export const mutate = {
   newEntry,
-  importFromLs,
+  batchImport,
 }
 
 export default { get, mutate }

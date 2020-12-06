@@ -75,9 +75,9 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, watchEffect, watch } from "vue";
-import NotifyModal from "@/components/Timer/NotifyModal.vue";
+import NotifyModal from "@/components/BaseComponents/NotifyModal.vue";
 import Bar from "@/components/Timer/Bar.vue";
-import { get } from "@/store/states/timer";
+import { get, mutate } from "@/store/states/timer";
 import { mutate as mutateHistory } from "@/store/states/history";
 import { data, actions } from "@//core/useTimer";
 
@@ -115,24 +115,25 @@ export default defineComponent({
 		if (process.env.NODE_ENV === "development") log = true;
 
 		function startTimer() {
-			console.assert(log, "Primary button clicked - starting");
+			if (log) console.log("Primary button clicked - starting");
 			actions.addTime(timer.value.spec[currentSegment.value].duration * 60);
 			actions.start();
 		}
 
 		function pauseTimer() {
-			console.assert(log, "Primary button clicked - pausing");
+			if (log) console.log("Primary button clicked - pausing");
 			actions.pause();
 		}
 
 		function resumeTimer() {
-			console.assert(log, "Primary button clicked - resuming");
+			if (log) console.log("Primary button clicked - resuming");
 			actions.resume();
 		}
 
 		function stopTimer() {
-			console.assert(log, "Primary button clicked - stopping");
+			if (log) console.log("Primary button clicked - stopping");
 			actions.stop();
+			mutate.deselectTimer();
 		}
 
 		const isRemaining = computed(() => {

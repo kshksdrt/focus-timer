@@ -4,7 +4,7 @@
     "name": "Pomodoro Timer",
     "desc": "The Pomodoro Technique is a time management method developed by Francesco Cirillo in the late 1980s. The idea is to break down work into intervals, traditionally 25 minutes in length, separated by short breaks of 5 minutes.",
     "spec": [
-      { "name": "work", "icon": "work", "duration": 25 },
+      { "name": "business_center", "icon": "work", "duration": 25 },
       { "name": "break", "icon": "local_cafe", "duration": 5 }
     ]
   }

@@ -34,7 +34,7 @@
 	--bg-8: var(--gray1);
 	--bg-9: var(--gray0);
 	--text: var(--gray0);
-	font-family: "Ubuntu";
+	font-family: "Ubuntu", sans-serif;
 }
 
 #app {
@@ -73,7 +73,11 @@
 
 input,
 button {
-	font-family: "Nunito", sans-serif;
+	font-family: "Ubuntu", sans-serif;
+}
+
+button:disabled {
+	cursor: not-allowed;
 }
 
 body {

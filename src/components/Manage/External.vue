@@ -26,7 +26,7 @@ export default defineComponent({
 		const externals = get.externals;
 
 		function importTimerFromExternal(id: string) {
-			mutate.importTimer(id);
+			mutate.importTimerFromExternal(id);
 		}
 
 		return {

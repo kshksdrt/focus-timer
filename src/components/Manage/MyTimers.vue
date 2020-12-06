@@ -27,15 +27,34 @@
 				You have not added any timers.
 			</p>
 		</transition-group>
+		<div
+			class="flex-start flex-align-center long-button no-select mb3"
+			@click="openBuildTimerModal"
+		>
+			<i class="material-icons">add_circle</i>
+			<p class="text-medium m0 ml4">Build a timer</p>
+		</div>
+		<CustomModal
+			v-if="buildTimerModal"
+			@close="closeBuildTimerModal"
+			size="medium"
+		>
+			<BuildTimer @complete="closeBuildTimerModal" />
+		</CustomModal>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
+
+import CustomModal from "@/components/BaseComponents/CustomModal.vue";
+import BuildTimer from "@/components/Manage/BuildTimer.vue";
+
 import { get, mutate } from "@/store/states/timer";
 
 export default defineComponent({
 	name: "MyTimers",
+	components: { BuildTimer, CustomModal },
 	setup() {
 		const myTimers = get.timers;
 
@@ -43,9 +62,20 @@ export default defineComponent({
 			mutate.removeTimer(id);
 		}
 
+		const buildTimerModal = ref(false);
+		function openBuildTimerModal() {
+			buildTimerModal.value = true;
+		}
+		function closeBuildTimerModal() {
+			buildTimerModal.value = false;
+		}
+
 		return {
 			myTimers,
 			removeTimer,
+			openBuildTimerModal,
+			closeBuildTimerModal,
+			buildTimerModal,
 		};
 	},
 	data() {

@@ -2,9 +2,9 @@ import { CountQueryResult, Filter, HistoryEntry } from "@//types/history";
 import { get } from "@/store/states/history.ts";
 
 // @ts-ignore
-import { getDay } from "@//core/dateFunctions.js"
+import { getDaysAgo } from "@/core/dateFunctions.ts"
 
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const months = require("@/lib/months.json");
 
 function queryFilterOperator (queryFilter: Filter, current: Date, queryDate: Date,) {
   const d = current.getDate() === queryDate.getDate()
@@ -61,8 +61,8 @@ export function getDurationDaysOfWeek() {
   const y = []
 
   for (let i = 7; i >= 0; i--) {
-    const result = getAllTimersDurations(data, 'day', getDay({days: -i}))
-    x.push(getDay({days: -i, months: 0}).getDate())
+    const result = getAllTimersDurations(data, 'day', getDaysAgo(i))
+    x.push(getDaysAgo(i).getDate())
     y.push(result)
   }
   return { x, y }
@@ -74,8 +74,8 @@ export function getDurationDaysOfMonth() {
   const y = []
 
   for (let i = 30; i >= 0; i--) {
-    const result = getAllTimersDurations(data, 'day', getDay({days: -i}))
-    x.push(getDay({days: -i, months: 0}).getDate())
+    const result = getAllTimersDurations(data, 'day', getDaysAgo(i))
+    x.push(getDaysAgo(i).getDate())
     y.push(result)
   }
   return { x, y }
@@ -89,7 +89,7 @@ export function getDurationMonthsOfYear() {
   // @ts-ignore
 	const today = new Date(Date.today().toISOString());
 
-  months.forEach((each, i) => {
+  months.forEach((each: string, i: number) => {
     const result = getAllTimersDurations(data, 'month', new Date(today.getFullYear(), i+1, 0))
     x.push(each.slice(0,3))
     y.push(result)
