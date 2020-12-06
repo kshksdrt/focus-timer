@@ -10,8 +10,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-const iconsList = require("@/lib/iconsList.json");
-
 export default defineComponent({
 	name: "NotifyModal",
 	props: {

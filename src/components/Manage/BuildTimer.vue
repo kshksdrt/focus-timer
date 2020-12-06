@@ -95,7 +95,7 @@
 <script lang="ts">
 // @ts-ignore
 import { v4 as uuid } from "uuid";
-import { computed, defineComponent, reactive, ref } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 
 import CustomModal from "@/components/BaseComponents/CustomModal.vue";
 import IconPicker from "@/components/Manage/IconPicker.vue";

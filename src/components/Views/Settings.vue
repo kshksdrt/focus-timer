@@ -91,7 +91,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, toRefs } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 
 import ToggleButton from "@/components/BaseComponents/ToggleButton.vue";
 import CustomModal from "@/components/BaseComponents/CustomModal.vue";
@@ -142,7 +142,8 @@ export default defineComponent({
 			}
 		}
 
-		function importData(event: any) {
+		// @ts-ignore
+		function importData(event) {
 			if (!event?.target?.files) return;
 			const file = event.target.files[0];
 			if (!file || !file.name) return;
