@@ -2,17 +2,7 @@
 	<div>
 		<div class="modal-overlay" @click="onClose" />
 		<div class="modal modal-small">
-			<h1 class="capitalize mb8">
-				<i class="material-icons mr3">{{ iconValid ? titleIcon : "work" }}</i>
-				{{ title }}
-			</h1>
-			<p>{{ message }}</p>
-			<button
-				class="full-width bg-secondary text-dark no-transform mt6"
-				@click="onProceedClicked"
-			>
-				{{ primaryButtonText }}
-			</button>
+			<slot />
 		</div>
 	</div>
 </template>
@@ -43,19 +33,14 @@ export default defineComponent({
 			required: true,
 		},
 	},
-	emits: ["proceed-clicked", "close"],
+	emits: ["close"],
 	methods: {
-		onProceedClicked() {
-			this.$emit("proceed-clicked");
-		},
 		onClose() {
 			this.$emit("close");
 		},
 	},
-	setup(props) {
-		return {
-			iconValid: iconsList.includes(props.titleIcon),
-		};
+	setup() {
+		return {};
 	},
 });
 </script>

@@ -12,15 +12,17 @@ export default function() {
   const version = require('../../package.json').version
   localStorage.setItem("focus-timer.version", JSON.stringify(version))
 
-  const timers = getTimersFromLs()
-  const history = getHistoryFromLs()
-  const settings = getSettingsFromLs()
+  try {
+    const timers = getTimersFromLs()
+    const history = getHistoryFromLs()
+    const settings = getSettingsFromLs()
 
-  if (!Array.isArray([...timers, ...history])) return
-  // x.forEach(each => {
-  //   if (!Object.keys(each).includes("name") || !Object.keys(each).includes("uuid")) return
-  // })
-  mutateTimer.batchImport(timers as Timer[])
-  mutateHistory.batchImport(history as HistoryEntry[])
-  mutateApp.batchImport(settings as Settings)
+    if (!Array.isArray(timers) || !Array.isArray(history)) return
+
+    mutateTimer.batchImport(timers as Timer[])
+    mutateHistory.batchImport(history as HistoryEntry[])
+    mutateApp.batchImport(settings as Settings)
+  } catch (err) {
+    if (process.env.NODE_ENV === "development") console.log(err);
+  }
 }

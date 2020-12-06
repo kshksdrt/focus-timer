@@ -36,7 +36,7 @@
 			<p class="text-smaller text-dim p4 m0 uppercase">Misc</p>
 			<div
 				class="pl4 pr4 pt2 pb2 mb2 cursor-pointer hover-bg-2 transition-all"
-				@click="clearData"
+				@click="resetModal = true"
 			>
 				<p class="mb2 text-medium">Clear all data</p>
 				<p class="mb0 text-dim text-medium">
@@ -44,6 +44,45 @@
 				</p>
 			</div>
 		</div>
+		<CustomModal v-if="importModal" @close="closeImportModal">
+			<h1 class="capitalize mb8">
+				<i class="material-icons mr3">library_add_check</i>
+				Import complete!
+			</h1>
+			<p>Following data have been imported.</p>
+			<p
+				v-for="(each, i) in imports"
+				:key="i"
+				class="mb1 ml4 text-small capitalize"
+			>
+				{{ `${i + 1}. ${each}` }}
+			</p>
+			<button
+				class="full-width bg-secondary text-dark mt6"
+				@click="closeImportModal"
+			>
+				GO TO HOME
+			</button>
+		</CustomModal>
+		<NotifyModal
+			v-if="error.state"
+			@proceed-clicked="closeErrorModal"
+			@close="closeErrorModal"
+			titleIcon="error"
+			title="Import error"
+			:message="error.message"
+			primaryButtonText="CLOSE"
+		/>
+		<NotifyModal
+			v-if="resetModal"
+			@proceed-clicked="clearData"
+			@close="resetModal = false"
+			titleIcon="priority_high"
+			title="Clear all data?"
+			message="This action is irreversible. Proceed?"
+			primaryButtonText="CLEAR ALL DATA"
+		/>
+		<!-- Invisible import/export element -->
 		<a ref="exportRef" :href="url" :download="filename" />
 		<div v-show="false" class="pb3">
 			<input type="file" @change="importData" ref="importRef" />
@@ -52,18 +91,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, reactive, ref, toRefs } from "vue";
 
 import ToggleButton from "@/components/BaseComponents/ToggleButton.vue";
+import CustomModal from "@/components/BaseComponents/CustomModal.vue";
+import NotifyModal from "@/components/BaseComponents/NotifyModal.vue";
 
 import $app from "@/store/states/app";
 import $history from "@/store/states/history";
 import $timer from "@/store/states/timer";
+import { clearLocalStorage } from "@/store/scripts/ls.ts";
+import { BatchImport } from "@/types/app";
 
 export default defineComponent({
 	name: "Settings",
-	components: { ToggleButton },
+	components: { ToggleButton, CustomModal, NotifyModal },
 	setup() {
+		// Export and import features
 		const url = ref("");
 		const filename = ref("");
 		const exportRef = ref(null);
@@ -110,24 +154,58 @@ export default defineComponent({
 					if (typeof fr.result === "string")
 						validateResult(JSON.parse(fr.result));
 				} catch {
-					displayImportError("Invalid file");
+					displayImportError("Selected file could not be imported.");
 				}
 			};
 			fr.onerror = () => {
-				displayImportError("Invalid file");
+				displayImportError("Selected file could not be imported.");
 			};
 		}
 
+		// Import result
+		const error = reactive({
+			state: false,
+			message: "",
+		});
+
 		function displayImportError(message: string) {
-			console.log(message);
+			error.state = true;
+			error.message = message;
 		}
 
-		function validateResult(result: any) {
-			console.log(result);
+		function closeErrorModal() {
+			error.state = false;
+			error.message = "";
 		}
 
+		function validateResult(result: BatchImport) {
+			storeData(result);
+		}
+
+		const importModal = ref(false);
+		const imports = ref([] as string[]);
+		function storeData(data: BatchImport) {
+			imports.value = Object.keys(data);
+			importModal.value = true;
+			try {
+				$history.mutate.batchImport(data.history);
+				$timer.mutate.batchImport(data.timers);
+				$app.mutate.batchImport(data.settings);
+			} catch (err) {
+				if (process.env.NODE_ENV === "development") console.log(err);
+			}
+		}
+
+		function closeImportModal() {
+			importModal.value = false;
+			imports.value = [];
+			$app.mutate.changeView("home");
+		}
+
+		const resetModal = ref(false);
 		function clearData() {
-			console.log("clearing data");
+			clearLocalStorage();
+			location.reload();
 		}
 
 		return {
@@ -140,6 +218,12 @@ export default defineComponent({
 			importRef,
 			importData,
 			clearData,
+			error,
+			closeErrorModal,
+			resetModal,
+			imports,
+			importModal,
+			closeImportModal,
 		};
 	},
 });

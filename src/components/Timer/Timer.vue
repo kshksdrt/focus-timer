@@ -75,7 +75,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, watchEffect, watch } from "vue";
-import NotifyModal from "@/components/Timer/NotifyModal.vue";
+import NotifyModal from "@/components/BaseComponents/NotifyModal.vue";
 import Bar from "@/components/Timer/Bar.vue";
 import { get } from "@/store/states/timer";
 import { mutate as mutateHistory } from "@/store/states/history";
