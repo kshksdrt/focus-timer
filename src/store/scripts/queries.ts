@@ -85,7 +85,7 @@ export function getDurationMonthsOfYear() {
   const y: number[] = []
 
   // @ts-ignore
-	const today = new Date(Date.today().toISOString());
+	const today = new Date();
 
   months.forEach((each: string, i: number) => {
     const result = getAllTimersDurations(data, 'month', new Date(today.getFullYear(), i+1, 0))
