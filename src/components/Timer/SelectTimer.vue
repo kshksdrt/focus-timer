@@ -5,23 +5,15 @@
 		<div v-if="myTimers.length > 0">
 			<transition name="fade-slow">
 				<div class="card-alt">
-					<div v-for="timer in myTimers" :key="timer.id">
-						<div class="flex-between">
-							<p class="text-bold m0">{{ timer.name }}</p>
-							<button
-								v-if="!isSelected(timer.id)"
-								class="bg-none icon"
-								@click="selectTimer(timer.id)"
-							>
-								<i class="material-icons light">play_arrow</i>
-							</button>
-							<p
-								v-if="isSelected(timer.id)"
-								class="uppercase text-smaller text-dim no-select"
-							>
-								Selected
-							</p>
-						</div>
+					<div
+						v-for="timer in myTimers"
+						:key="timer.id"
+						class="flex-between mb2 mt2"
+					>
+						<p class="text-bold m0">{{ timer.name }}</p>
+						<button class="bg-none icon" @click="selectTimer(timer.id)">
+							<i class="material-icons light">play_arrow</i>
+						</button>
 					</div>
 				</div>
 			</transition>
@@ -71,16 +63,11 @@ export default defineComponent({
 			mutate.selectTimer(id);
 		}
 
-		function isSelected(id: string) {
-			return current.value.id === id;
-		}
-
 		return {
 			welcomeMessage,
 			welcomeMessageSecondary,
 			myTimers,
 			selectTimer,
-			isSelected,
 		};
 	},
 });

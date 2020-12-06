@@ -4,7 +4,7 @@
 		<div
 			v-for="timer in todaysSessions"
 			:key="timer.name"
-			class="flex-between flex-align-center"
+			class="flex-between flex-align-center mb3"
 		>
 			<p class="m0 text-medium">{{ timer.name }}</p>
 			<div class="badge no-select">

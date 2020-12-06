@@ -15,19 +15,19 @@ const library = require("@/lib/timersList.json");
 library.forEach((x: Timer) => externals.value.push(x))
 
 // Mutations
-function importTimer (id: string) {
+function importTimerFromExternal(id: string) {
   const result = externals.value.find((x) => x.id === id);
   const doesExist = timers.value.find((x) => x.id === id);
   if (result && !doesExist) timers.value.push(result)
   exportToLs(timers.value)
 }
 
-function newTimer (timer: Timer) {
+function newTimer(timer: Timer) {
   timers.value.push(timer)
   exportToLs(timers.value)
 }
 
-function removeTimer (id: string) {
+function removeTimer(id: string) {
   const prev = JSON.parse(JSON.stringify(timers.value))
   const result = prev.filter((each: Timer) => {
     return each.id !== id
@@ -37,12 +37,16 @@ function removeTimer (id: string) {
   exportToLs(timers.value)
 }
 
-function selectTimer (id: string) {
+function selectTimer(id: string) {
   const result = timers.value.find((x) => x.id === id);
   if (result) {
     currentTimer.value = { ...result }
     timerSelected.value = true
   }
+}
+
+function deselectTimer() {
+  timerSelected.value = false
 }
 
 // LocalStorage
@@ -66,7 +70,8 @@ export const mutate = {
   newTimer,
   removeTimer,
   selectTimer,
-  importTimer,
+  deselectTimer,
+  importTimerFromExternal,
   batchImport,
 }
 

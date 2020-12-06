@@ -4,7 +4,7 @@ import { get } from "@/store/states/history.ts";
 // @ts-ignore
 import { getDaysAgo } from "@/core/dateFunctions.ts"
 
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const months = require("@/lib/months.json");
 
 function queryFilterOperator (queryFilter: Filter, current: Date, queryDate: Date,) {
   const d = current.getDate() === queryDate.getDate()
@@ -89,7 +89,7 @@ export function getDurationMonthsOfYear() {
   // @ts-ignore
 	const today = new Date(Date.today().toISOString());
 
-  months.forEach((each, i) => {
+  months.forEach((each: string, i: number) => {
     const result = getAllTimersDurations(data, 'month', new Date(today.getFullYear(), i+1, 0))
     x.push(each.slice(0,3))
     y.push(result)

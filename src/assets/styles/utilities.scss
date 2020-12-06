@@ -280,6 +280,14 @@
 	background: var(--bg-9);
 }
 
+.bg-danger {
+	background: rgba(216, 50, 0, 0.2);
+}
+
+.bg-highlight {
+	background: rgba(255, 204, 0, 0.083);
+}
+
 .bg-primary {
 	background: var(--primary);
 }
@@ -450,6 +458,10 @@
 
 .border-left {
 	border-left: 1px solid var(--bg-3);
+}
+
+.border-highlight {
+	border-left: 2px solid var(--secondary);
 }
 
 .rounded-full {

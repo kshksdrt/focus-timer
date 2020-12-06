@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="modal-overlay" @click="onClose" />
-		<div class="modal modal-small">
+		<div :class="`modal modal-${size}`">
 			<slot />
 		</div>
 	</div>
@@ -15,22 +15,10 @@ const iconsList = require("@/lib/iconsList.json");
 export default defineComponent({
 	name: "NotifyModal",
 	props: {
-		titleIcon: {
+		size: {
 			type: String,
 			required: false,
-			default: "work",
-		},
-		title: {
-			type: String,
-			required: true,
-		},
-		message: {
-			type: String,
-			required: true,
-		},
-		primaryButtonText: {
-			type: String,
-			required: true,
+			default: "small",
 		},
 	},
 	emits: ["close"],
@@ -38,9 +26,6 @@ export default defineComponent({
 		onClose() {
 			this.$emit("close");
 		},
-	},
-	setup() {
-		return {};
 	},
 });
 </script>
