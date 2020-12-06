@@ -57,7 +57,6 @@ export default defineComponent({
 		});
 
 		const myTimers = get.timers;
-		const current = get.currentTimer;
 
 		function selectTimer(id: string) {
 			mutate.selectTimer(id);
