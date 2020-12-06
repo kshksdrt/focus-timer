@@ -31,7 +31,7 @@ export function getOneCount(history: HistoryEntry[], queryFilter: Filter, queryD
 export function getAllTimersCounts(history: HistoryEntry[], queryFilter: Filter, queryDate: Date) {
   const result = [] as CountQueryResult[];
 
-  history.reverse().some((current) => {
+  history.forEach((current) => {
     const currentItemDate = new Date(current.ts);
     if (queryFilterOperator(queryFilter, currentItemDate, queryDate)) {
       const existingCount = result.find((x) => x.name === current.name);
@@ -40,9 +40,7 @@ export function getAllTimersCounts(history: HistoryEntry[], queryFilter: Filter,
       } else {
         result.push({ name: current.name, count: 1 });
       }
-      return false;
     }
-    return true;
   });
   return result;
 }
