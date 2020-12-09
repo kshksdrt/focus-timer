@@ -1,11 +1,13 @@
-import { CountQueryResult, HistoryEntry } from "@//types/history";
+import { CountQueryResult, HistoryEntry, HistoryV2Entry, HistoryEntryIndeterminate } from "@//types/history";
 import { computed, ref, watchEffect } from 'vue';
 
 import { storeHistoryToLs } from '@/store/scripts/ls';
 import { getAllTimersCounts } from '@/store/scripts/queries';
+import { migrateToHistoryV2 } from '../scripts/migrations';
+import { Timer } from '@/types/timer';
 
 // State
-const history = ref([] as HistoryEntry[])
+const history = ref([] as HistoryV2Entry[])
 const todaysSessions = ref([] as CountQueryResult[])
 
 // Watchers
@@ -15,22 +17,37 @@ watchEffect(() => {
 })
 
 // Mutations
-function newEntry(name: string, duration: number) {
+function newEntry(timerId: string, duration: number) {
   const entry = {
     ts: new Date(),
-    name, duration
+    timerId, duration
   };
-  history.value.push(entry as HistoryEntry)
-  exportToLs(history.value)
+  history.value.push(entry as HistoryV2Entry)
+  exportToLs()
 }
 
 // LocalStorage
-function exportToLs(history: HistoryEntry[]) {
-  storeHistoryToLs(history)
+function exportToLs() {
+  storeHistoryToLs(history.value)
 }
 
-function batchImport(library: HistoryEntry[]) {
-  history.value = library
+function batchImport(data: HistoryEntryIndeterminate[], timers: Timer[]) {
+  // mergeOldEntries(data)
+  if (data.length > 0 && Object.keys(data[0]).includes("name")) {
+    console.log("Migrating data to v2")
+    data = migrateToHistoryV2(data as HistoryEntry[], timers)
+  }
+  data = data.sort((a, b) => (a.ts < b.ts) ? -1 : ((a.ts > b.ts) ? 1 : 0))
+  history.value = data.reduce((acc, entry) => {
+    if (!entry.timerId) return acc
+    acc.push({
+      timerId: entry.timerId,
+      ts: entry.ts,
+      duration: entry.duration,
+    })
+    return acc
+  }, [] as HistoryV2Entry[])
+  exportToLs()
 }
 
 // Exports

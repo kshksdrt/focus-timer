@@ -64,6 +64,7 @@ export const get = {
   externals: computed(() => externals.value),
   currentTimer: computed(() => currentTimer.value),
   timerSelected: computed(() => timerSelected.value),
+  getTimerById: (id: string) => timers.value.find(x => x.id === id)
 }
 
 export const mutate = {
