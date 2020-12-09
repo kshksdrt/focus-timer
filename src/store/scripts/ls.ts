@@ -1,6 +1,6 @@
 import { Settings } from '@//types/app';
 import { Timer } from "@//types/timer";
-import { HistoryEntry } from '../../types/history';
+import { HistoryEntryIndeterminate } from '../../types/history';
 
 const LS_KEYS = {
   saved: 'focus-timer.library',
@@ -42,7 +42,7 @@ export function getTimersFromLs () {
   return read(LS_KEYS.saved, "[]")
 }
 
-export function storeHistoryToLs (payload: HistoryEntry[]) {
+export function storeHistoryToLs (payload: HistoryEntryIndeterminate[]) {
   write(LS_KEYS.history, payload)
 }
 

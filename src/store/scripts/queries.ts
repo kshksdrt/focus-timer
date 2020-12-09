@@ -1,12 +1,13 @@
-import { CountQueryResult, Filter, HistoryEntry } from "@//types/history";
+import { CountQueryResult, Filter, HistoryV2Entry } from "@//types/history";
 import { get } from "@/store/states/history.ts";
+import { get as getTimer } from '../states/timer';
 
 // @ts-ignore
 import { getDaysAgo } from "@/core/dateFunctions.ts"
 
 const months = require("@/lib/months.json");
 
-function queryFilterOperator (queryFilter: Filter, current: Date, queryDate: Date,) {
+export function queryFilterOperator (queryFilter: Filter, current: Date, queryDate: Date,) {
   const d = current.getDate() === queryDate.getDate()
   const m = current.getMonth() === queryDate.getMonth()
   const y = current.getFullYear() === queryDate.getFullYear()
@@ -18,34 +19,34 @@ function queryFilterOperator (queryFilter: Filter, current: Date, queryDate: Dat
   }
 }
 
-export function getOneCount(history: HistoryEntry[], queryFilter: Filter, queryDate: Date, timerName: string) {
+export function getOneCount(history: HistoryV2Entry[], queryFilter: Filter, queryDate: Date, timerId: string) {
   return history.reduce((acc, current) => {
     const currentItemDate = new Date(current.ts);
     if (queryFilterOperator(queryFilter, currentItemDate, queryDate)) {
-      if (current.name === timerName) return acc+1
+      if (current.timerId === timerId) return acc+1
     }
     return acc;
   }, 0);
 }
 
-export function getAllTimersCounts(history: HistoryEntry[], queryFilter: Filter, queryDate: Date) {
+export function getAllTimersCounts(history: HistoryV2Entry[], queryFilter: Filter, queryDate: Date) {
   const result = [] as CountQueryResult[];
 
   history.forEach((current) => {
     const currentItemDate = new Date(current.ts);
     if (queryFilterOperator(queryFilter, currentItemDate, queryDate)) {
-      const existingCount = result.find((x) => x.name === current.name);
-      if (existingCount) {
-        existingCount.count++;
-      } else {
-        result.push({ name: current.name, count: 1 });
-      }
+      const timer = getTimer.getTimerById(current.timerId)
+      if (!timer) return
+
+      let existingCount
+      if (timer.name) existingCount = result.find((x) => x.name === timer.name);
+      existingCount ? existingCount.count++ : result.push({ name: timer.name, count: 1 });
     }
   });
   return result;
 }
 
-export function getAllTimersDurations(history: HistoryEntry[], queryFilter: Filter, queryDate: Date) {
+export function getAllTimersDurations(history: HistoryV2Entry[], queryFilter: Filter, queryDate: Date) {
   return history.reduce((acc, current) => {
     const currentItemDate = new Date(current.ts);
     if (queryFilterOperator(queryFilter, currentItemDate, queryDate)) return acc+current.duration
@@ -95,3 +96,27 @@ export function getDurationMonthsOfYear() {
 
   return { x, y }
 }
+
+// Utilities
+// export function mergeOldEntries(data: HistoryEntry[]) {
+//   data.reduce((acc, current) => {
+//     if (queryFilterOperator("day", current.ts, new Date())) {
+//       // These happened today
+//       acc.push(current)
+//       return acc
+//     } else if (current.ts > getDaysAgoISO(-31)) {
+//       // These happened in the last 31 days, but not today
+//       for (let i = 31; i >= 0; i--) {
+//         const result = getAllTimersDurations(data, 'day', getDaysAgo(i))
+//         acc.push({
+//           ts,
+
+//         })
+//       }
+//     }
+
+//     return acc
+//   }, [] as HistoryEntry[])
+//   console.log(data)
+// }
+

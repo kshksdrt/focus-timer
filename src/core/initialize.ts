@@ -3,7 +3,7 @@ import { getHistoryFromLs, getSettingsFromLs, getTimersFromLs } from "@/store/sc
 import { mutate as mutateTimer } from "@/store/states/timer";
 import { mutate as mutateHistory } from "@/store/states/history";
 import { mutate as mutateApp } from "@/store/states/app";
-import { HistoryEntry } from '@/types/history';
+import { HistoryEntryIndeterminate } from '@/types/history';
 import { Settings } from '@/types/app';
 
 export default function() {
@@ -20,7 +20,7 @@ export default function() {
     if (!Array.isArray(timers) || !Array.isArray(history)) return
 
     mutateTimer.batchImport(timers as Timer[])
-    mutateHistory.batchImport(history as HistoryEntry[])
+    mutateHistory.batchImport(history as HistoryEntryIndeterminate[], timers as Timer[])
     mutateApp.batchImport(settings as Settings)
   } catch (err) {
     if (process.env.NODE_ENV === "development") console.log(err);

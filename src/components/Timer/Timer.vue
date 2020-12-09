@@ -169,7 +169,7 @@ export default defineComponent({
 
 		function countOneInHistory() {
 			const duration = timer.value.spec.reduce((a, c) => a + c.duration, 0);
-			mutateHistory.newEntry(timer.value.name, duration);
+			mutateHistory.newEntry(timer.value.id, duration);
 		}
 
 		const currentSegment = ref(0);

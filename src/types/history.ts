@@ -4,7 +4,21 @@ export interface HistoryEntry {
   duration: number;
 }
 
+export interface HistoryV2Entry {
+  ts: Date;
+  timerId: string;
+  duration: number;
+}
+
+export interface HistoryEntryIndeterminate {
+  ts: Date;
+  timerId?: string;
+  name?: string;
+  duration: number;
+}
+
 export type Filter = "day" | "month" | "year";
+
 export interface CountQueryResult {
   name: string;
   count: number;

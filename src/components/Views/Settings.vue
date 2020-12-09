@@ -186,10 +186,11 @@ export default defineComponent({
 		const importModal = ref(false);
 		const imports = ref([] as string[]);
 		function storeData(data: BatchImport) {
+			console.log(data);
 			imports.value = Object.keys(data);
 			importModal.value = true;
 			try {
-				$history.mutate.batchImport(data.history);
+				$history.mutate.batchImport(data.history, data.timers);
 				$timer.mutate.batchImport(data.timers);
 				$app.mutate.batchImport(data.settings);
 			} catch (err) {
