@@ -65,21 +65,29 @@
 				@proceed-clicked="onPopupButtonClicked"
 				@close="closePopup"
 				:titleIcon="timer.spec[currentSegment].icon"
-				:title="title()"
-				:message="message()"
-				:primaryButtonText="primaryButtonText()"
+				:title="notificationStrings.popupTitle"
+				:message="notificationStrings.popupBody"
+				:primaryButtonText="notificationStrings.popupPrimaryButton"
 			/>
 		</teleport>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watchEffect, watch } from "vue";
+import {
+	defineComponent,
+	ref,
+	computed,
+	watchEffect,
+	watch,
+	reactive,
+} from "vue";
 import NotifyModal from "@/components/BaseComponents/NotifyModal.vue";
 import Bar from "@/components/Timer/Bar.vue";
 import { get, mutate } from "@/store/states/timer";
 import { mutate as mutateHistory } from "@/store/states/history";
-import { data, actions } from "@//core/useTimer";
+import { data, actions } from "@/core/useTimer";
+import { displayNotification, requestPermission } from "@/pwa/notifications";
 
 export default defineComponent({
 	name: "Timer",
@@ -187,7 +195,10 @@ export default defineComponent({
 			if (val === "waiting") {
 				if (isRemaining.value === false) countOneInHistory();
 				actions.addTime(getNextSegmentduration() * 60);
+				if (Notification.permission === "default") requestPermission();
+				generateNotificationStrings();
 				showPopup.value = true;
+				notify();
 			}
 		});
 
@@ -202,38 +213,64 @@ export default defineComponent({
 			primaryButtonClickHandler();
 		}
 
-		function primaryButtonText() {
-			if (isRemaining.value === true) {
-				const { name, duration } = timer.value.spec[currentSegment.value + 1];
-				return `Start ${name} (${duration} mins)?`;
-			} else if (isRemaining.value === false) {
-				return `Start ${timer.value.name} again`;
-			}
-		}
+		const notificationStrings = reactive({
+			popupTitle: "",
+			popupBody: "",
+			popupPrimaryButton: "",
+			notificationTitle: "",
+			notificationBody: "",
+		});
 
-		function title() {
+		function generateNotificationStrings() {
 			if (isRemaining.value === true) {
 				const prev = timer.value.spec[currentSegment.value];
-				return `${prev.name} complete!`;
+				const title = `${prev.name.charAt(0).toUpperCase() +
+					prev.name.slice(1)} segment complete!`;
+				const { name, duration } = timer.value.spec[currentSegment.value + 1];
+				notificationStrings.popupTitle = title;
+				let tip = "";
+				if (Notification.permission !== "granted")
+					tip =
+						". Quick tip: Allow notifications to be notified about timer events";
+				notificationStrings.popupBody =
+					"You're doing great, keep it going!" + tip;
+				notificationStrings.popupPrimaryButton = `Start ${name} (${duration} mins)?`;
+				notificationStrings.notificationTitle = title;
+				notificationStrings.notificationBody = `Go to next segment: ${name} (${duration} mins)`;
 			} else if (isRemaining.value === false) {
-				return `Session complete`;
+				notificationStrings.popupTitle = "Session complete";
+				let tip = "";
+				if (Notification.permission !== "granted")
+					tip =
+						". Quick tip: Allow notifications to be notified about timer events";
+				notificationStrings.popupBody =
+					"You're doing great, keep it going!" + tip;
+				notificationStrings.popupPrimaryButton = `Start ${timer.value.name} again`;
+				notificationStrings.notificationTitle = "Session complete";
+				notificationStrings.notificationBody = "Start the next session";
+			} else {
+				notificationStrings.popupTitle = "Error";
+				notificationStrings.popupBody = "Error";
+				notificationStrings.popupPrimaryButton = "Error";
+				notificationStrings.notificationTitle = "Error";
+				notificationStrings.notificationBody = "Error";
 			}
 		}
 
-		function message() {
-			if (isRemaining.value === true) {
-				return `You're doing great, keep it going!`;
-			} else if (isRemaining.value === false) {
-				return `You're doing great, keep it going!`;
-			}
+		function notify() {
+			const { notificationTitle, notificationBody } = notificationStrings;
+			const action = {
+				action: "next",
+				title: notificationBody,
+			};
+			displayNotification(notificationTitle, notificationBody, [action]);
 		}
 
 		return {
 			timer,
 			timerVisibility,
 			timerState,
-			title,
-			message,
+			notificationStrings,
 			countdown,
 			currentSegment,
 			currentMinute,
@@ -244,7 +281,6 @@ export default defineComponent({
 			showPopup,
 			onPopupButtonClicked,
 			isRemaining,
-			primaryButtonText,
 			closePopup,
 		};
 	},
