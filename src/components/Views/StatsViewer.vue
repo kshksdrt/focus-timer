@@ -1,6 +1,19 @@
 <template>
 	<div class="full-width">
-		<div class="flex-between">
+		<div class="flex-start full-width pb6 border-bottom" v-if="mounted">
+			<p class="m0 text-medium text-bold text-primary mr8">Timer</p>
+			<Dropdown class="full-width" :current="currentTimer.name">
+				<div
+					class="capitalize"
+					v-for="timer in allTimers"
+					:key="timer.id"
+					@click="selectTimer(timer.id)"
+				>
+					{{ timer.name }}
+				</div>
+			</Dropdown>
+		</div>
+		<div class="flex-between mt6">
 			<div
 				v-for="{ target, text } in views"
 				:key="target"
@@ -11,12 +24,29 @@
 				<p class="text-small text-center m2">{{ text }}</p>
 			</div>
 		</div>
-		<div class="full-width mt12">
-			<canvas id="weekCanvas" v-show="currentView === 'week'"></canvas>
-			<canvas id="monthCanvas" v-show="currentView === 'month'"></canvas>
-			<canvas id="yearCanvas" v-show="currentView === 'year'"></canvas>
+		<div class="full-width mt12 relative" style="height: 25vh">
+			<transition-group name="fade-slow" mode="out-in">
+				<canvas
+					id="weekCanvas"
+					class="absolute"
+					:key="0"
+					v-show="currentView === 'week'"
+				></canvas>
+				<canvas
+					id="monthCanvas"
+					class="absolute"
+					:key="1"
+					v-show="currentView === 'month'"
+				></canvas>
+				<canvas
+					id="yearCanvas"
+					class="absolute"
+					:key="2"
+					v-show="currentView === 'year'"
+				></canvas>
+			</transition-group>
 		</div>
-		<div class="full-width mt12 p2">
+		<div class="full-width p2">
 			<h4 class="text-primary pb2">Summary</h4>
 			<div v-for="({ name, value }, i) in stats" :key="i" class="flex-between">
 				<p class="text-medium">{{ name }}</p>
@@ -29,16 +59,20 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, watchEffect } from "vue";
 
+import Dropdown from "@/components/BaseComponents/Dropdown.vue";
+
 import { Dataset, View } from "@//types/stats.ts";
 import { get as getTimer } from "@/store/states/timer";
 import { Timer } from "@/types/timer";
 import { thisMonth, thisWeek, thisYear } from "@/store/states/stats";
+// import { config } from "@/core/chartConfig"
 
-const { createGraph } = require("@//core/chartFunctions.js");
+const { registerCanvas, createGraph } = require("@//core/chartFunctions.js");
 const months: string[] = require("@/lib/months.json");
 
 export default defineComponent({
 	name: "StatsViewer",
+	components: { Dropdown },
 	setup() {
 		const views = [
 			{
@@ -58,9 +92,18 @@ export default defineComponent({
 		const currentView = ref("week" as View);
 		const currentTimer = ref({} as Timer);
 
+		// @ts-ignore
+		let weekChart, monthChart, yearChart;
+
 		onMounted(() => {
 			currentTimer.value = getTimer.timers.value[0];
 		});
+
+		function selectTimer(id: string) {
+			const res = getTimer.timers.value.find((x) => x.id === id);
+			if (res) currentTimer.value = res;
+			drawGraph();
+		}
 
 		function getClass(view: View) {
 			return {
@@ -80,7 +123,8 @@ export default defineComponent({
 				);
 				if (!stats) return;
 				const dataset: Dataset = stats.dataset;
-				createGraph(dataset, "week");
+				// @ts-ignore
+				createGraph(weekChart, "week", dataset);
 				createSummary(dataset, "week");
 			}
 			if (currentView.value === "month") {
@@ -89,7 +133,8 @@ export default defineComponent({
 				);
 				if (!stats) return;
 				const dataset: Dataset = stats.dataset;
-				createGraph(dataset, "month");
+				// @ts-ignore
+				createGraph(monthChart, "month", dataset);
 				createSummary(dataset, "month");
 			}
 			if (currentView.value === "year") {
@@ -98,7 +143,8 @@ export default defineComponent({
 				);
 				if (!stats) return;
 				const { x, y } = stats.dataset;
-				createGraph(createMonthStrings({ x, y }), "year");
+				// @ts-ignore
+				createGraph(yearChart, "year", createMonthStrings({ x, y }));
 				createSummary({ x, y }, "year");
 			}
 		}
@@ -120,6 +166,9 @@ export default defineComponent({
 
 		onMounted(() => {
 			mounted.value = true;
+			weekChart = registerCanvas("bar", "weekCanvas");
+			monthChart = registerCanvas("line", "monthCanvas");
+			yearChart = registerCanvas("bar", "yearCanvas");
 			drawGraph();
 		});
 
@@ -169,6 +218,7 @@ export default defineComponent({
 				});
 			}
 			if (type === "year") {
+				// To-do: Decide what to show
 				console.log("year");
 			}
 		}
@@ -179,6 +229,10 @@ export default defineComponent({
 			changeView,
 			getClass,
 			stats,
+			currentTimer,
+			allTimers: getTimer.timers,
+			selectTimer,
+			mounted,
 		};
 	},
 });

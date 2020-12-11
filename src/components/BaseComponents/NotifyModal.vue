@@ -1,24 +1,26 @@
 <template>
-	<div>
-		<div class="modal-overlay" @click="onClose" />
-		<div class="modal modal-small">
-			<div class="flex-start flex-align-center mb8">
-				<i class="material-icons text-xxl mr4">{{
-					iconValid ? titleIcon : "work"
-				}}</i>
-				<h3 class="capitalize">
-					{{ title }}
-				</h3>
+	<teleport to="#modal">
+		<div>
+			<div class="modal-overlay" @click="onClose" />
+			<div class="modal modal-small">
+				<div class="flex-start flex-align-center mb8">
+					<i class="material-icons text-xxl mr4">{{
+						iconValid ? titleIcon : "work"
+					}}</i>
+					<h3 class="capitalize">
+						{{ title }}
+					</h3>
+				</div>
+				<p>{{ message }}</p>
+				<button
+					class="full-width bg-secondary text-dark no-transform mt6 text-bold"
+					@click="onProceedClicked"
+				>
+					{{ primaryButtonText }}
+				</button>
 			</div>
-			<p>{{ message }}</p>
-			<button
-				class="full-width bg-secondary text-dark no-transform mt6 text-bold"
-				@click="onProceedClicked"
-			>
-				{{ primaryButtonText }}
-			</button>
 		</div>
-	</div>
+	</teleport>
 </template>
 
 <script lang="ts">

@@ -60,16 +60,15 @@
 		>
 			{{ each }}
 		</p> -->
-		<teleport to="#modal" v-if="showPopup">
-			<NotifyModal
-				@proceed-clicked="onPopupButtonClicked"
-				@close="closePopup"
-				:titleIcon="timer.spec[currentSegment].icon"
-				:title="notificationStrings.popupTitle"
-				:message="notificationStrings.popupBody"
-				:primaryButtonText="notificationStrings.popupPrimaryButton"
-			/>
-		</teleport>
+		<NotifyModal
+			v-if="showPopup"
+			@proceed-clicked="onPopupButtonClicked"
+			@close="closePopup"
+			:titleIcon="timer.spec[currentSegment].icon"
+			:title="notificationStrings.popupTitle"
+			:message="notificationStrings.popupBody"
+			:primaryButtonText="notificationStrings.popupPrimaryButton"
+		/>
 	</div>
 </template>
 
@@ -82,8 +81,10 @@ import {
 	watch,
 	reactive,
 } from "vue";
+
 import NotifyModal from "@/components/BaseComponents/NotifyModal.vue";
 import Bar from "@/components/Timer/Bar.vue";
+
 import { get, mutate } from "@/store/states/timer";
 import { mutate as mutateHistory } from "@/store/states/history";
 import { data, actions } from "@/core/useTimer";

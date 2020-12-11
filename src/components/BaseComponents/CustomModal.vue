@@ -1,10 +1,12 @@
 <template>
-	<div>
-		<div class="modal-overlay" @click="onClose" />
-		<div :class="`modal modal-${size}`">
-			<slot />
+	<teleport to="#modal">
+		<div>
+			<div class="modal-overlay" @click="onClose" />
+			<div :class="`modal modal-${size}`">
+				<slot />
+			</div>
 		</div>
-	</div>
+	</teleport>
 </template>
 
 <script lang="ts">
