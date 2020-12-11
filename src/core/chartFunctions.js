@@ -1,12 +1,15 @@
 import Chart from "chart.js";
 
-export function createGraph({ x, y }, type) {
-	const chartCanvas = document?.getElementById("chartCanvas")?.getContext("2d");
+export function createGraph({ x, y }, mode) {
+	const chartCanvas = document
+		?.getElementById(`${mode}Canvas`)
+		?.getContext("2d");
+	let type;
+	mode === "week" || mode === "year" ? (type = "bar") : (type = "line");
 
 	Chart.defaults.global.defaultFontSize = 11;
-
 	new Chart(chartCanvas, {
-		type: type || "line",
+		type,
 		data: {
 			labels: x,
 			datasets: [

@@ -7,4 +7,12 @@ module.exports = {
 		appleMobileWebAppCapable: "yes",
 		appleMobileWebAppStatusBarStyle: "black",
 	},
+	configureWebpack: {
+		optimization: {
+			splitChunks: {
+				minSize: 10000,
+				maxSize: 250000,
+			},
+		},
+	},
 };

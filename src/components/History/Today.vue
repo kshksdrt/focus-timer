@@ -21,13 +21,14 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import { get } from "@/store/states/history";
+// import { get } from "@/store/states/history";
+import { todayAsCounts as todaysSessions } from "@/store/states/stats";
 
 export default defineComponent({
 	name: "Today",
 	setup() {
 		return {
-			todaysSessions: get.todaysSessions,
+			todaysSessions,
 		};
 	},
 });

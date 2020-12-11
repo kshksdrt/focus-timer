@@ -26,7 +26,7 @@ import { computed, defineComponent } from "vue";
 
 import { get, mutate } from "@/store/states/timer";
 import app from "@/store/states/app";
-import { get as getHistory } from "@/store/states/history";
+import { todayAsCounts } from "@/store/states/stats";
 
 export default defineComponent({
 	name: "SelectTimer",
@@ -46,7 +46,7 @@ export default defineComponent({
 
 			const today = new Date();
 			const time = today.getHours();
-			if (getHistory.todaysSessions.value.length > 0)
+			if (todayAsCounts.value.length > 0)
 				return "Let's keep working! Up for another session?";
 
 			if (time > 20) return "Not working today? Up for a work session?";

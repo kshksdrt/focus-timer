@@ -12,7 +12,9 @@
 			</div>
 		</div>
 		<div class="full-width mt12">
-			<canvas id="chartCanvas"></canvas>
+			<canvas id="weekCanvas" v-show="currentView === 'week'"></canvas>
+			<canvas id="monthCanvas" v-show="currentView === 'month'"></canvas>
+			<canvas id="yearCanvas" v-show="currentView === 'year'"></canvas>
 		</div>
 		<div class="full-width mt12 p2">
 			<h4 class="text-primary pb2">Summary</h4>
@@ -28,13 +30,12 @@
 import { defineComponent, onMounted, ref, watchEffect } from "vue";
 
 import { Dataset, View } from "@//types/stats.ts";
-import {
-	getDurationDaysOfWeek,
-	getDurationDaysOfMonth,
-	getDurationMonthsOfYear,
-} from "@/store/scripts/queries";
+import { get as getTimer } from "@/store/states/timer";
+import { Timer } from "@/types/timer";
+import { thisMonth, thisWeek, thisYear } from "@/store/states/stats";
 
 const { createGraph } = require("@//core/chartFunctions.js");
+const months: string[] = require("@/lib/months.json");
 
 export default defineComponent({
 	name: "StatsViewer",
@@ -55,6 +56,11 @@ export default defineComponent({
 		];
 
 		const currentView = ref("week" as View);
+		const currentTimer = ref({} as Timer);
+
+		onMounted(() => {
+			currentTimer.value = getTimer.timers.value[0];
+		});
 
 		function getClass(view: View) {
 			return {
@@ -69,20 +75,42 @@ export default defineComponent({
 
 		function drawGraph() {
 			if (currentView.value === "week") {
-				const dataset: Dataset = getDurationDaysOfWeek();
-				createGraph(dataset, "bar");
-				createStats(dataset, "week");
+				const stats = thisWeek.value.find(
+					(x) => currentTimer.value.id === x.timerId
+				);
+				if (!stats) return;
+				const dataset: Dataset = stats.dataset;
+				createGraph(dataset, "week");
+				createSummary(dataset, "week");
 			}
 			if (currentView.value === "month") {
-				const dataset: Dataset = getDurationDaysOfMonth();
-				createGraph(dataset, "line");
-				createStats(dataset, "week");
+				const stats = thisMonth.value.find(
+					(x) => currentTimer.value.id === x.timerId
+				);
+				if (!stats) return;
+				const dataset: Dataset = stats.dataset;
+				createGraph(dataset, "month");
+				createSummary(dataset, "month");
 			}
 			if (currentView.value === "year") {
-				const dataset: Dataset = getDurationMonthsOfYear();
-				createGraph(dataset, "bar");
-				createStats(dataset, "week");
+				const stats = thisYear.value.find(
+					(x) => currentTimer.value.id === x.timerId
+				);
+				if (!stats) return;
+				const { x, y } = stats.dataset;
+				createGraph(createMonthStrings({ x, y }), "year");
+				createSummary({ x, y }, "year");
 			}
+		}
+
+		function createMonthStrings(dataset: Dataset) {
+			return {
+				y: dataset.y,
+				x: months.reduce((acc: string[], c) => {
+					acc.push(c.slice(0, 3));
+					return acc;
+				}, []),
+			};
 		}
 
 		const mounted = ref(false);
@@ -97,7 +125,7 @@ export default defineComponent({
 
 		const stats = ref([] as { name: string; value: string }[]);
 
-		function createStats(dataset: Dataset, type: View) {
+		function createSummary(dataset: Dataset, type: View) {
 			stats.value = [];
 			if (type === "week" || type === "month") {
 				// Most productive day
@@ -147,8 +175,9 @@ export default defineComponent({
 
 		return {
 			views,
-			getClass,
+			currentView,
 			changeView,
+			getClass,
 			stats,
 		};
 	},
