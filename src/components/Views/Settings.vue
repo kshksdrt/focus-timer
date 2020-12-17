@@ -97,10 +97,10 @@ import ToggleButton from "@/components/BaseComponents/ToggleButton.vue";
 import CustomModal from "@/components/BaseComponents/CustomModal.vue";
 import NotifyModal from "@/components/BaseComponents/NotifyModal.vue";
 
-import $app from "@/store/states/app";
-import $history from "@/store/states/history";
-import $timer from "@/store/states/timer";
-import { clearLocalStorage } from "@/store/scripts/ls.ts";
+import $app from "@/providers/app";
+import $history from "@/providers/history";
+import $timer from "@/providers/timer";
+import { clearLocalStorage } from "@/scripts/ls.ts";
 import { BatchImport } from "@/types/app";
 
 export default defineComponent({

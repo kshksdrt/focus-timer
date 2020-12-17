@@ -1,4 +1,4 @@
-### Upcoming features
+### To-dos
 
 1. Archiving old history.
 2. Prevent creating timers with duplicate names.

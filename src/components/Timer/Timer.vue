@@ -60,16 +60,15 @@
 		>
 			{{ each }}
 		</p> -->
-		<teleport to="#modal" v-if="showPopup">
-			<NotifyModal
-				@proceed-clicked="onPopupButtonClicked"
-				@close="closePopup"
-				:titleIcon="timer.spec[currentSegment].icon"
-				:title="notificationStrings.popupTitle"
-				:message="notificationStrings.popupBody"
-				:primaryButtonText="notificationStrings.popupPrimaryButton"
-			/>
-		</teleport>
+		<NotifyModal
+			v-if="showPopup"
+			@proceed-clicked="onPopupButtonClicked"
+			@close="closePopup"
+			:titleIcon="timer.spec[currentSegment].icon"
+			:title="notificationStrings.popupTitle"
+			:message="notificationStrings.popupBody"
+			:primaryButtonText="notificationStrings.popupPrimaryButton"
+		/>
 	</div>
 </template>
 
@@ -82,11 +81,13 @@ import {
 	watch,
 	reactive,
 } from "vue";
+
 import NotifyModal from "@/components/BaseComponents/NotifyModal.vue";
 import Bar from "@/components/Timer/Bar.vue";
-import { get, mutate } from "@/store/states/timer";
-import { mutate as mutateHistory } from "@/store/states/history";
-import { data, actions } from "@/core/useTimer";
+
+import { get, mutate } from "@/providers/timer";
+import { mutate as mutateHistory } from "@/providers/history";
+import { data, actions } from "@/scripts/useTimer";
 import { displayNotification, requestPermission } from "@/pwa/notifications";
 
 export default defineComponent({
@@ -231,7 +232,7 @@ export default defineComponent({
 				let tip = "";
 				if (Notification.permission !== "granted")
 					tip =
-						". Quick tip: Allow notifications to be notified about timer events";
+						" Quick tip: Allow notifications to be notified about timer events";
 				notificationStrings.popupBody =
 					"You're doing great, keep it going!" + tip;
 				notificationStrings.popupPrimaryButton = `Start ${name} (${duration} mins)?`;
@@ -242,7 +243,7 @@ export default defineComponent({
 				let tip = "";
 				if (Notification.permission !== "granted")
 					tip =
-						". Quick tip: Allow notifications to be notified about timer events";
+						" Quick tip: Allow notifications to be notified about timer events";
 				notificationStrings.popupBody =
 					"You're doing great, keep it going!" + tip;
 				notificationStrings.popupPrimaryButton = `Start ${timer.value.name} again`;

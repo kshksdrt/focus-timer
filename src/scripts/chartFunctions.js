@@ -1,20 +1,15 @@
-import Chart from "chart.js";
+const Chart = require("chart.js");
+Chart.defaults.global.defaultFontSize = 11;
 
-export function createGraph({ x, y }, type) {
-	const chartCanvas = document?.getElementById("chartCanvas")?.getContext("2d");
-
-	Chart.defaults.global.defaultFontSize = 11;
-
-	new Chart(chartCanvas, {
-		type: type || "line",
+export function registerCanvas(type = "bar", canvasId) {
+	return new Chart(document?.getElementById(canvasId)?.getContext("2d"), {
+		type,
 		data: {
-			labels: x,
+			labels: [],
 			datasets: [
 				{
 					label: "Minutes spent working",
-					data: y,
-					backgroundColor: Array(x.length).fill("rgba(73, 89, 197, 0.6)"),
-					borderColor: Array(x.length).fill("rgba(73, 89, 197, 1.0)"),
+					data: [],
 					borderWidth: 1,
 					pointBorderWidth: 0,
 					pointRadius: 1,
@@ -61,4 +56,16 @@ export function createGraph({ x, y }, type) {
 			},
 		},
 	});
+}
+
+export function createGraph(chart, mode, { x = [], y = [] }) {
+	chart.data.labels = [...x];
+	chart.data.datasets[0].data = [...y];
+	chart.data.datasets[0].backgroundColor = Array(x.length).fill(
+		"rgba(73, 89, 197, 0.6)"
+	);
+	chart.data.datasets[0].borderColor = Array(x.length).fill(
+		"rgba(73, 89, 197, 1.0)"
+	);
+	chart.update({ duration: 0 });
 }

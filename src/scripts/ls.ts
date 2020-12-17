@@ -1,6 +1,6 @@
-import { Settings } from '@//types/app';
-import { Timer } from "@//types/timer";
-import { HistoryEntryIndeterminate } from '../../types/history';
+import { Settings } from '@/types/app';
+import { Timer } from "@/types/timer";
+import { HistoryEntryIndeterminate } from '@/types/history';
 
 const LS_KEYS = {
   saved: 'focus-timer.library',
