@@ -1,32 +1,12 @@
 import { computed } from "vue";
 
 import { CountQueryResult, HistoryV2Entry, Filter } from '@/types/history';
+import { Stats } from '@/types/stats';
+
 import { get as getTimer } from '@/store/states/timer';
 import { get as getHistory } from '@/store/states/history';
-import { FilterOptions, Stats } from '@/types/stats';
+import { queryFilterOperator, getDuration } from '@/store/scripts/historyUtils';
 import { getDaysAgo } from '@/core/dateFunctions';
-
-function queryFilterOperator (queryFilter: Filter, current: Date, queryDate: Date,) {
-  const d = current.getDate() === queryDate.getDate()
-  const m = current.getMonth() === queryDate.getMonth()
-  const y = current.getFullYear() === queryDate.getFullYear()
-  switch (queryFilter) {
-    case 'day': return ![d, m, y].includes(false)
-    case 'month': return ![m, y].includes(false)
-    case 'year': return ![y].includes(false)
-    default: return false
-  }
-}
-
-function getDuration(history: HistoryV2Entry[], filterOptions: FilterOptions) {
-  const {range, date, timerId} = filterOptions
-  return history.reduce((acc, current) => {
-    const currentItemDate = new Date(current.ts);
-    if (timerId && current.timerId !== timerId) return acc 
-    if (queryFilterOperator(range, currentItemDate, date)) return acc+current.duration
-    return acc;
-  }, 0);
-}
 
 export const todayAsCounts = computed(() => {
   const history: HistoryV2Entry[] = JSON.parse(JSON.stringify(getHistory.history.value))

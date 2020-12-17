@@ -1,7 +1,8 @@
 import { computed, ref } from "vue";
-// import { v4 as uuid } from "uuid";
 
-import { Timer } from "@//types/timer";
+import { Timer } from "@/types/timer";
+
+import history from "@/store/states/history";
 import { storeTimersToLs } from '@/store/scripts/ls';
 
 // State
@@ -34,6 +35,7 @@ function removeTimer(id: string) {
   })
   timers.value = []
   result.forEach((x: Timer) => timers.value.push(x))
+  history.mutate.deleteEntriesByTimer(id)
   exportToLs(timers.value)
 }
 

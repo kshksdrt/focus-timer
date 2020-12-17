@@ -67,5 +67,5 @@ export function createGraph(chart, mode, { x = [], y = [] }) {
 	chart.data.datasets[0].borderColor = Array(x.length).fill(
 		"rgba(73, 89, 197, 1.0)"
 	);
-	chart.update("none");
+	chart.update({ duration: 0 });
 }

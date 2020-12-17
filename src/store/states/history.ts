@@ -1,8 +1,9 @@
-import { HistoryEntry, HistoryV2Entry, HistoryEntryIndeterminate } from "@//types/history";
+import { HistoryEntry, HistoryV2Entry } from "@//types/history";
 import { computed, ref } from 'vue';
 
+import { mergeOldHistory } from '@/store/scripts/historyUtils';
 import { storeHistoryToLs } from '@/store/scripts/ls';
-import { migrateToHistoryV2 } from '../scripts/migrations';
+import { migrateToHistoryV2 } from '@/store/scripts/migrations';
 import { Timer } from '@/types/timer';
 
 // State
@@ -18,19 +19,32 @@ function newEntry(timerId: string, duration: number) {
   exportToLs()
 }
 
-// LocalStorage
-function exportToLs() {
+function deleteEntriesByTimer(timerId: string) {
+  history.value = history.value.filter(x => (x.timerId !== timerId))
   storeHistoryToLs(history.value)
 }
 
-function batchImport(data: HistoryEntryIndeterminate[], timers: Timer[]) {
+// External data
+function batchImport(data: HistoryEntry[] | HistoryV2Entry[], timers: Timer[]) {
+  // Middleware: Migrate v1 to v2
+  let historyV2: HistoryV2Entry[]
   if (data.length > 0 && Object.keys(data[0]).includes("name")) {
     console.log("Migrating data to v2")
-    data = migrateToHistoryV2(data as HistoryEntry[], timers)
+    historyV2 = migrateToHistoryV2(data as HistoryEntry[], timers)
+  } else {
+    historyV2 = data as HistoryV2Entry[]
   }
-  // mergeOldEntries(data)
-  data = data.sort((a, b) => (a.ts < b.ts) ? -1 : ((a.ts > b.ts) ? 1 : 0))
-  history.value = data.reduce((acc, entry) => {
+
+  // Middleware: Merge
+  historyV2 = mergeOldHistory(historyV2 as HistoryV2Entry[], timers)
+
+  // Middleware: Delete old year entries
+
+  // Middleware: Sort
+  historyV2 = historyV2.sort((a, b) => (a.ts < b.ts) ? -1 : ((a.ts > b.ts) ? 1 : 0))
+
+  // Batch import
+  history.value = historyV2.reduce((acc, entry) => {
     if (!entry.timerId) return acc
     acc.push({
       timerId: entry.timerId,
@@ -42,6 +56,10 @@ function batchImport(data: HistoryEntryIndeterminate[], timers: Timer[]) {
   exportToLs()
 }
 
+function exportToLs() {
+  storeHistoryToLs(history.value)
+}
+
 // Exports
 export const get = {
   history: computed(() => history.value),
@@ -49,6 +67,7 @@ export const get = {
 
 export const mutate = {
   newEntry,
+  deleteEntriesByTimer,
   batchImport,
 }
 

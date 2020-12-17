@@ -232,7 +232,7 @@ export default defineComponent({
 				let tip = "";
 				if (Notification.permission !== "granted")
 					tip =
-						". Quick tip: Allow notifications to be notified about timer events";
+						" Quick tip: Allow notifications to be notified about timer events";
 				notificationStrings.popupBody =
 					"You're doing great, keep it going!" + tip;
 				notificationStrings.popupPrimaryButton = `Start ${name} (${duration} mins)?`;
@@ -243,7 +243,7 @@ export default defineComponent({
 				let tip = "";
 				if (Notification.permission !== "granted")
 					tip =
-						". Quick tip: Allow notifications to be notified about timer events";
+						" Quick tip: Allow notifications to be notified about timer events";
 				notificationStrings.popupBody =
 					"You're doing great, keep it going!" + tip;
 				notificationStrings.popupPrimaryButton = `Start ${timer.value.name} again`;

@@ -57,15 +57,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watchEffect } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 
 import Dropdown from "@/components/BaseComponents/Dropdown.vue";
 
 import { Dataset, View } from "@//types/stats.ts";
-import { get as getTimer } from "@/store/states/timer";
 import { Timer } from "@/types/timer";
+
+import { get as getTimer } from "@/store/states/timer";
 import { thisMonth, thisWeek, thisYear } from "@/store/states/stats";
-// import { config } from "@/core/chartConfig"
 
 const { registerCanvas, createGraph } = require("@//core/chartFunctions.js");
 const months: string[] = require("@/lib/months.json");
@@ -114,6 +114,7 @@ export default defineComponent({
 
 		function changeView(x: View) {
 			currentView.value = x;
+			drawGraph();
 		}
 
 		function drawGraph() {
@@ -160,16 +161,13 @@ export default defineComponent({
 		}
 
 		const mounted = ref(false);
-		watchEffect(() => {
-			if (mounted?.value === true) drawGraph();
-		});
 
 		onMounted(() => {
 			mounted.value = true;
 			weekChart = registerCanvas("bar", "weekCanvas");
 			monthChart = registerCanvas("line", "monthCanvas");
 			yearChart = registerCanvas("bar", "yearCanvas");
-			drawGraph();
+			setTimeout(() => changeView("week"), 200);
 		});
 
 		const stats = ref([] as { name: string; value: string }[]);
