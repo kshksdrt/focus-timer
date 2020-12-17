@@ -64,10 +64,10 @@ import Dropdown from "@/components/BaseComponents/Dropdown.vue";
 import { Dataset, View } from "@//types/stats.ts";
 import { Timer } from "@/types/timer";
 
-import { get as getTimer } from "@/store/states/timer";
-import { thisMonth, thisWeek, thisYear } from "@/store/states/stats";
+import { get as getTimer } from "@/providers/timer";
+import { thisMonth, thisWeek, thisYear } from "@/providers/stats";
 
-const { registerCanvas, createGraph } = require("@//core/chartFunctions.js");
+const { registerCanvas, createGraph } = require("@/scripts/chartFunctions.js");
 const months: string[] = require("@/lib/months.json");
 
 export default defineComponent({

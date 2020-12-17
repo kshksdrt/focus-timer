@@ -2,8 +2,8 @@ import { computed, ref } from "vue";
 
 import { Timer } from "@/types/timer";
 
-import history from "@/store/states/history";
-import { storeTimersToLs } from '@/store/scripts/ls';
+import history from "@/providers/history";
+import { storeTimersToLs } from '@/scripts/ls';
 
 // State
 const timers = ref([] as Timer[])

@@ -50,7 +50,7 @@ import { defineComponent, ref } from "vue";
 import CustomModal from "@/components/BaseComponents/CustomModal.vue";
 import BuildTimer from "@/components/Manage/BuildTimer.vue";
 
-import { get, mutate } from "@/store/states/timer";
+import { get, mutate } from "@/providers/timer";
 
 export default defineComponent({
 	name: "MyTimers",

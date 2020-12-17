@@ -1,4 +1,4 @@
-import { getDaysAgo } from "@/core/dateFunctions";
+import { getDaysAgo } from "@/scripts/dateFunctions";
 import { Filter, HistoryV2Entry } from "@/types/history";
 import { FilterOptions } from "@/types/stats";
 import { Timer } from "@/types/timer";

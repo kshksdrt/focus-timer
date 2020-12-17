@@ -101,7 +101,7 @@ import CustomModal from "@/components/BaseComponents/CustomModal.vue";
 import IconPicker from "@/components/Manage/IconPicker.vue";
 
 import { Spec, Timer } from "@/types/timer";
-import { mutate } from "@/store/states/timer";
+import { mutate } from "@/providers/timer";
 
 const months = require("@/lib/months.json");
 const iconsList = require("@/lib/iconsList.json");

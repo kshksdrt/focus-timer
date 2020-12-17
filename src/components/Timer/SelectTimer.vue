@@ -24,9 +24,9 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 
-import { get, mutate } from "@/store/states/timer";
-import app from "@/store/states/app";
-import { todayAsCounts } from "@/store/states/stats";
+import { get, mutate } from "@/providers/timer";
+import app from "@/providers/app";
+import { todayAsCounts } from "@/providers/stats";
 
 export default defineComponent({
 	name: "SelectTimer",

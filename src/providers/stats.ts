@@ -3,10 +3,10 @@ import { computed } from "vue";
 import { CountQueryResult, HistoryV2Entry, Filter } from '@/types/history';
 import { Stats } from '@/types/stats';
 
-import { get as getTimer } from '@/store/states/timer';
-import { get as getHistory } from '@/store/states/history';
-import { queryFilterOperator, getDuration } from '@/store/scripts/historyUtils';
-import { getDaysAgo } from '@/core/dateFunctions';
+import { get as getTimer } from '@/providers/timer';
+import { get as getHistory } from '@/providers/history';
+import { queryFilterOperator, getDuration } from '@/scripts/historyUtils';
+import { getDaysAgo } from '@/scripts/dateFunctions';
 
 export const todayAsCounts = computed(() => {
   const history: HistoryV2Entry[] = JSON.parse(JSON.stringify(getHistory.history.value))

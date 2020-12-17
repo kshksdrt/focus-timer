@@ -21,8 +21,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-// import { get } from "@/store/states/history";
-import { todayAsCounts as todaysSessions } from "@/store/states/stats";
+// import { get } from "@/providers/history";
+import { todayAsCounts as todaysSessions } from "@/providers/stats";
 
 export default defineComponent({
 	name: "Today",

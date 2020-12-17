@@ -1,9 +1,9 @@
 import { HistoryEntry, HistoryV2Entry } from "@//types/history";
 import { computed, ref } from 'vue';
 
-import { mergeOldHistory } from '@/store/scripts/historyUtils';
-import { storeHistoryToLs } from '@/store/scripts/ls';
-import { migrateToHistoryV2 } from '@/store/scripts/migrations';
+import { mergeOldHistory } from '@/scripts/historyUtils';
+import { storeHistoryToLs } from '@/scripts/ls';
+import { migrateToHistoryV2 } from '@/scripts/migrations';
 import { Timer } from '@/types/timer';
 
 // State

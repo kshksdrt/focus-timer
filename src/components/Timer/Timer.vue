@@ -85,9 +85,9 @@ import {
 import NotifyModal from "@/components/BaseComponents/NotifyModal.vue";
 import Bar from "@/components/Timer/Bar.vue";
 
-import { get, mutate } from "@/store/states/timer";
-import { mutate as mutateHistory } from "@/store/states/history";
-import { data, actions } from "@/core/useTimer";
+import { get, mutate } from "@/providers/timer";
+import { mutate as mutateHistory } from "@/providers/history";
+import { data, actions } from "@/scripts/useTimer";
 import { displayNotification, requestPermission } from "@/pwa/notifications";
 
 export default defineComponent({
