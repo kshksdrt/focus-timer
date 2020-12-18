@@ -48,11 +48,27 @@ export function mergeOldHistory(history: HistoryV2Entry[], timers: Timer[]): His
     })
   }
 
-  // Push recent entries
+  // Merge Daily
+  for (let i = 1; i <= 31 + getDaysAgo(31).getDate(); i++) {
+    timers.forEach(timer => {
+      const c = new Date(getDaysAgo(i))
+      const filters = {
+        range: 'day' as Filter,
+        date: c,
+        timerId: timer.id,
+      }
+      const duration = getDuration(history, filters)
+      if (duration > 0) merge.push({
+        timerId: timer.id,
+        ts: c,
+        duration,
+      })
+    })
+  }
+  
+  // Push today's entries
   history.forEach(entry => {
-    const h = new Date(entry.ts)
-    const boundary = new Date(archiveBoundary)
-    if (h > boundary) merge.push(entry)
+    if (queryFilterOperator("day", new Date(entry.ts), new Date())) merge.push(entry)
   })
 
   return merge
