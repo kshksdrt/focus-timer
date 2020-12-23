@@ -1,5 +1,5 @@
 <template>
-	<div class="full-width">
+	<div class="full-width mt12">
 		<div class="flex-start full-width pb6 border-bottom" v-if="mounted">
 			<p class="m0 text-medium text-bold text-primary mr8">Timer</p>
 			<Dropdown class="full-width" :current="currentTimer.name">
@@ -46,7 +46,7 @@
 				></canvas>
 			</transition-group>
 		</div>
-		<div class="full-width p2">
+		<div class="full-width p2" v-if="currentView !== 'year'">
 			<h4 class="text-primary pb2">Summary</h4>
 			<div v-for="({ name, value }, i) in stats" :key="i" class="flex-between">
 				<p class="text-medium">{{ name }}</p>
@@ -214,10 +214,6 @@ export default defineComponent({
 					name: "Standard deviation",
 					value: `${sd} mins`,
 				});
-			}
-			if (type === "year") {
-				// To-do: Decide what to show
-				console.log("year");
 			}
 		}
 

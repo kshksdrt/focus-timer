@@ -15,13 +15,11 @@
 			No activity.
 		</p>
 	</div>
-	<!-- <p>{{ computes }}</p> -->
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
-// import { get } from "@/providers/history";
 import { todayAsCounts as todaysSessions } from "@/providers/stats";
 
 export default defineComponent({

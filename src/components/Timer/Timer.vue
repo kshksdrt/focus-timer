@@ -1,8 +1,18 @@
 <template>
-	<div class="pb12" id="timer">
+	<div id="timer">
+		<div
+			class="card-border full-width m0 hover-bg-1 cursor pointer mt4 mb4"
+			v-if="timer.name"
+			@click="stopTimer"
+		>
+			<p class="m0 text-medium">
+				<span class="text-primary">{{ timer.name }}</span>
+				<span class="text-dim"> in progress. Click to stop timer.</span>
+			</p>
+		</div>
 		<transition name="fade">
-			<div class="mt8 mb6 full-width">
-				<Bar :currentSegment="currentSegment" />
+			<div class="full-width card-border mt4 mb4">
+				<Bar :currentSegment="currentSegment" class="mt12" />
 				<div
 					class="flex-center full-width rounded-full no-select bg-bg-1 mt12 mb8"
 				>
@@ -30,7 +40,7 @@
 					</div>
 				</div>
 				<!-- Controls -->
-				<div class="flex-center">
+				<div class="flex-center mb8">
 					<button
 						class="rounded-full icon size-largest mr4"
 						@click="primaryButtonClickHandler"
@@ -287,12 +297,3 @@ export default defineComponent({
 	},
 });
 </script>
-
-<style lang="scss" scoped>
-.label {
-	width: 100%;
-	text-align: center;
-	text-transform: capitalize;
-	transform: translateY(-160%);
-}
-</style>

@@ -177,6 +177,7 @@ export default defineComponent({
 		}
 
 		function addToMyTimers() {
+			if (segments.value.length === 0) return;
 			const timer: Timer = {
 				id: uuid(),
 				name: name.value,

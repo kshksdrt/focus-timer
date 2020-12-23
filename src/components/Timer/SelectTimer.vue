@@ -1,5 +1,5 @@
 <template>
-	<div class="card-border" id="selectTimer">
+	<div class="card-border full-width mb4 mt6">
 		<h2 class="text-primary">{{ welcomeMessage }}</h2>
 		<p class="text-small pb5">{{ welcomeMessageSecondary }}</p>
 		<div v-if="myTimers.length > 0">

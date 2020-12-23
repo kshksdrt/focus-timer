@@ -9,8 +9,8 @@ export interface Settings {
 }
 
 export interface BatchImport {
-  history: HistoryV2Entry[];
-  timers: Timer[];
-  settings: Settings;
-  version: string;
+  history?: HistoryV2Entry[];
+  timers?: Timer[];
+  settings?: Settings;
+  version?: string;
 }

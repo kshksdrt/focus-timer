@@ -1,5 +1,5 @@
 <template>
-	<div class="flex-column-start full-width">
+	<div class="flex-column-start full-width mt6">
 		<transition name="fade" mode="out-in">
 			<component :is="view" />
 		</transition>
@@ -22,10 +22,12 @@ export default defineComponent({
 	name: "MainPanel",
 	components: { Timer, SelectTimer, Today },
 	setup() {
+		const view = computed(() =>
+			get.timerSelected?.value === true ? "Timer" : "SelectTimer"
+		);
+
 		return {
-			view: computed(() =>
-				get.timerSelected?.value === true ? "Timer" : "SelectTimer"
-			),
+			view,
 		};
 	},
 });

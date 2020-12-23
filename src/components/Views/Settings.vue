@@ -1,5 +1,5 @@
 <template>
-	<div class="m2 no-select">
+	<div class="m2 no-select mt12">
 		<h2 class="text-primary pb4">Settings</h2>
 		<div class="bg-bg-1 pb2 pt2 mb4 rounded-subtle">
 			<p class="text-smaller text-dim p4 m0 uppercase">User Interface</p>
@@ -42,6 +42,20 @@
 				<p class="mb0 text-dim text-medium">
 					Reset to factory settings and start afresh.
 				</p>
+			</div>
+			<div
+				class="pl4 pr4 pt2 pb2 mb2 cursor-pointer hover-bg-2 transition-all"
+				@click="generateSample"
+			>
+				<p class="mb2 text-medium">Generate sample data</p>
+				<p class="mb0 text-dim text-medium">
+					Populates the app with automatically generated data for testing
+					purposes.
+				</p>
+			</div>
+			<div class="pl4 pr4 pt2 pb2 mb2 cursor-pointer hover-bg-2 transition-all">
+				<p class="mb2 text-medium">Version</p>
+				<p class="mb0 text-dim text-medium">v{{ version }}</p>
 			</div>
 		</div>
 		<CustomModal v-if="importModal" @close="closeImportModal">
@@ -101,12 +115,15 @@ import $app from "@/providers/app";
 import $history from "@/providers/history";
 import $timer from "@/providers/timer";
 import { clearLocalStorage } from "@/scripts/ls.ts";
+import { createSampleData } from "@/scripts/sampleData.ts";
 import { BatchImport } from "@/types/app";
 
 export default defineComponent({
 	name: "Settings",
 	components: { ToggleButton, CustomModal, NotifyModal },
 	setup() {
+		const version = require("../../../package.json").version;
+
 		// Export and import features
 		const url = ref("");
 		const filename = ref("");
@@ -153,7 +170,7 @@ export default defineComponent({
 			fr.onload = () => {
 				try {
 					if (typeof fr.result === "string")
-						validateResult(JSON.parse(fr.result));
+						validateImportAndStore(JSON.parse(fr.result));
 				} catch {
 					displayImportError("Selected file could not be imported.");
 				}
@@ -179,7 +196,7 @@ export default defineComponent({
 			error.message = "";
 		}
 
-		function validateResult(result: BatchImport) {
+		function validateImportAndStore(result: BatchImport) {
 			storeData(result);
 		}
 
@@ -190,9 +207,10 @@ export default defineComponent({
 			imports.value = Object.keys(data);
 			importModal.value = true;
 			try {
-				$history.mutate.batchImport(data.history, data.timers);
-				$timer.mutate.batchImport(data.timers);
-				$app.mutate.batchImport(data.settings);
+				if (data.history && data.timers)
+					$history.mutate.batchImport(data.history, data.timers);
+				if (data.timers) $timer.mutate.batchImport(data.timers);
+				if (data.settings) $app.mutate.batchImport(data.settings);
 			} catch (err) {
 				if (process.env.NODE_ENV === "development") console.log(err);
 			}
@@ -210,8 +228,15 @@ export default defineComponent({
 			location.reload();
 		}
 
+		function generateSample() {
+			const data = createSampleData();
+			validateImportAndStore(data);
+			// createSampleData();
+		}
+
 		return {
 			settings: $app.get.settings,
+			version,
 			toggleGrayscale: () => $app.mutate.toggleGrayscaleMode(),
 			exportData,
 			url,
@@ -226,6 +251,7 @@ export default defineComponent({
 			imports,
 			importModal,
 			closeImportModal,
+			generateSample,
 		};
 	},
 });

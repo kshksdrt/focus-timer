@@ -38,8 +38,6 @@ function batchImport(data: HistoryEntry[] | HistoryV2Entry[], timers: Timer[]) {
   // Middleware: Merge
   historyV2 = mergeOldHistory(historyV2 as HistoryV2Entry[], timers)
 
-  // Middleware: Delete old year entries
-
   // Middleware: Sort
   historyV2 = historyV2.sort((a, b) => (a.ts < b.ts) ? -1 : ((a.ts > b.ts) ? 1 : 0))
 
@@ -53,11 +51,16 @@ function batchImport(data: HistoryEntry[] | HistoryV2Entry[], timers: Timer[]) {
     })
     return acc
   }, [] as HistoryV2Entry[])
-  exportToLs()
+  exportToLs(historyV2)
+  console.log(historyV2)
 }
 
-function exportToLs() {
-  storeHistoryToLs(history.value)
+function exportToLs(payload?: HistoryV2Entry[]) {
+  if (payload !== undefined) {
+    storeHistoryToLs(payload)
+  } else {
+    storeHistoryToLs(history.value)
+  }
 }
 
 // Exports

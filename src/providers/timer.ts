@@ -52,12 +52,17 @@ function deselectTimer() {
 }
 
 // LocalStorage
-function exportToLs(timers: Timer[]) {
-  storeTimersToLs(timers)
+function exportToLs(payload: Timer[]) {
+  if (payload !== undefined) {
+    storeTimersToLs(payload)
+  } else {
+    storeTimersToLs(timers.value)
+  }
 }
 
-function batchImport(library: Timer[]) {
-  timers.value = library
+function batchImport(payload: Timer[]) {
+  timers.value = payload
+  exportToLs(payload)
 }
 
 // Exports

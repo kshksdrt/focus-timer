@@ -5,8 +5,8 @@
 				<p class="m0">{{ current }}</p>
 				<i class="material-icons">arrow_drop_down</i>
 			</div>
-			<div class="target" v-if="show">
-				<slot @click="toggle" />
+			<div class="target" v-if="show" @click="toggle">
+				<slot />
 			</div>
 		</div>
 		<div class="overlay-invisible" v-if="show" @click="toggle" />

@@ -26,12 +26,13 @@ export function getDuration(history: HistoryV2Entry[], filterOptions: FilterOpti
 }
 
 export function mergeOldHistory(history: HistoryV2Entry[], timers: Timer[]): HistoryV2Entry[] {
+  history = history.filter(x => queryFilterOperator('year', new Date(x.ts), new Date()))
   const merge = [] as HistoryV2Entry[]
   const today = new Date()
   const archiveBoundary = getDaysAgo(31 + getDaysAgo(31).getDate())
 
   // Merge monthly
-  for (let i = 1; i <= archiveBoundary.getMonth(); i++) {
+  for (let i = 0; i <= archiveBoundary.getMonth()+1; i++) {
     timers.forEach(timer => {
       const mergedTs = new Date(today.getFullYear(), i, 0)
       const filters = {
@@ -49,7 +50,7 @@ export function mergeOldHistory(history: HistoryV2Entry[], timers: Timer[]): His
   }
 
   // Merge Daily
-  for (let i = 1; i <= 31 + getDaysAgo(31).getDate(); i++) {
+  for (let i = 1; i < 31 + getDaysAgo(31).getDate(); i++) {
     timers.forEach(timer => {
       const c = new Date(getDaysAgo(i))
       const filters = {

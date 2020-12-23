@@ -7,7 +7,7 @@
 			class="relative ml1 mr1 pt1 rounded-full transition-all"
 			:class="getClass(segment.isCurrent)"
 		>
-			<div class="absolute label text-smallest">
+			<div class="absolute bar-label text-smallest">
 				<p class="m0">{{ segment.name }}</p>
 				<p class="text-dim m0">{{ `${segment.duration} mins` }}</p>
 			</div>
@@ -75,7 +75,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.label {
+.bar-label {
 	width: 100%;
 	text-align: center;
 	text-transform: capitalize;
