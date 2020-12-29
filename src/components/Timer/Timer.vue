@@ -7,7 +7,7 @@
 		>
 			<p class="m0 text-medium">
 				<span class="text-primary">{{ timer.name }}</span>
-				<span class="text-dim"> in progress. Click to stop timer.</span>
+				<span class="text-dim"> selected. Click to stop timer.</span>
 			</p>
 		</div>
 		<transition name="fade">
