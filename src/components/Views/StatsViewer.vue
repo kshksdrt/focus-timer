@@ -1,6 +1,9 @@
 <template>
 	<div class="full-width mt12">
-		<div class="flex-start full-width pb6 border-bottom" v-if="mounted">
+		<div
+			class="flex-start full-width pb6 border-bottom"
+			v-if="mounted && currentTimer"
+		>
 			<p class="m0 text-medium text-bold text-primary mr8">Timer</p>
 			<Dropdown class="full-width" :current="currentTimer.name">
 				<div
@@ -52,6 +55,7 @@
 				<p class="text-medium">{{ name }}</p>
 				<p class="text-medium">{{ value }}</p>
 			</div>
+			<p v-if="!currentTimer">No timer selected</p>
 		</div>
 	</div>
 </template>
@@ -83,10 +87,10 @@ export default defineComponent({
 				target: "month",
 				text: "Last 30d",
 			},
-			{
-				target: "year",
-				text: "This year",
-			},
+			// {
+			// 	target: "year",
+			// 	text: "This year",
+			// },
 		];
 
 		const currentView = ref("week" as View);

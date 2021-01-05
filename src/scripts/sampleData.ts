@@ -20,9 +20,7 @@ export function createSampleData() {
     })
   })
   
-  // for (let i = 1; i <= 31 + getDaysAgo(31).getDate(); i++) {
-  // }
-
+  // Entries for all days until the monthly archive boundary
   const count = Array(31 + getDaysAgo(31).getDate()).fill(null)
   count.forEach((_, i) => {
     const day = i+1
@@ -35,18 +33,22 @@ export function createSampleData() {
     })
   })
 
-  const months = Array(getDaysAgo(31).getMonth()).fill(null)
-  months.forEach((_, i) => {
-    const today = new Date()
-    const date = new Date(today.setMonth(i))
-    timers.forEach((each) => {
-      history.push({
-        timerId: each.id,
-        duration: each.spec.reduce((a: number, c: Spec) => a+c.duration, 0) * random(100, 258),
-        ts: date
-      })
-    })
-  })
+  // Yearly entries generation is not fully developed. It simply
+  // creates entries for each month of this year, causing future dates
+  // to be in history
+
+  // const months = Array(getDaysAgo(31).getMonth()).fill(null)
+  // months.forEach((_, i) => {
+  //   const today = new Date()
+  //   const date = new Date(today.setMonth(i))
+  //   timers.forEach((each) => {
+  //     history.push({
+  //       timerId: each.id,
+  //       duration: each.spec.reduce((a: number, c: Spec) => a+c.duration, 0) * random(100, 258),
+  //       ts: date
+  //     })
+  //   })
+  // })
   
   template.history = history
   return template as BatchImport
