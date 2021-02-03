@@ -1,12 +1,12 @@
 <template>
-	<div class="flex-column-start full-width mt6">
-		<transition name="fade" mode="out-in">
-			<component :is="view" />
-		</transition>
-		<transition name="fade" mode="out-in">
-			<Today />
-		</transition>
-	</div>
+  <div class="flex-column-start full-width mt6">
+    <transition name="fade" mode="out-in">
+      <component :is="view" />
+    </transition>
+    <transition name="fade" mode="out-in">
+      <Today />
+    </transition>
+  </div>
 </template>
 
 <script lang="ts">
@@ -19,16 +19,16 @@ import SelectTimer from "@/components/Timer/SelectTimer.vue";
 import Today from "@/components/History/Today.vue";
 
 export default defineComponent({
-	name: "MainPanel",
-	components: { Timer, SelectTimer, Today },
-	setup() {
-		const view = computed(() =>
-			get.timerSelected?.value === true ? "Timer" : "SelectTimer"
-		);
+  name: "MainPanel",
+  components: { Timer, SelectTimer, Today },
+  setup() {
+    const view = computed(() =>
+      get.timerSelected?.value === true ? "Timer" : "SelectTimer"
+    );
 
-		return {
-			view,
-		};
-	},
+    return {
+      view,
+    };
+  },
 });
 </script>

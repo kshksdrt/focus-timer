@@ -1,27 +1,27 @@
 {
-	"history": [],
-	"timers": [
-		{
-			"id": "cc03ab9b-e846-48a1-a44b-9990faad447e",
-			"name": "Timer 1",
-			"desc": "An auto-generated timer consisting of 25min - 5min pairs",
-			"spec": [
-				{ "name": "work", "icon": "business_center", "duration": 25 },
-				{ "name": "break", "icon": "local_cafe", "duration": 5 }
-			]
-		},
-		{
-			"id": "b03834db-d153-474a-872b-7b88d7e1f780",
-			"name": "Timer 2",
-			"desc": "Auto-generated timer",
-			"spec": [
-				{ "name": "work", "icon": "business_center", "duration": 25 },
-				{ "name": "break", "icon": "local_cafe", "duration": 5 },
-				{ "name": "work", "icon": "business_center", "duration": 20 },
-				{ "name": "break", "icon": "local_cafe", "duration": 10 }
-			]
-		}
-	],
-	"settings": { "lastUsedTimer": "", "grayscaleMode": false },
-	"version": "0.3.3"
+  "history": [],
+  "timers": [
+    {
+      "id": "cc03ab9b-e846-48a1-a44b-9990faad447e",
+      "name": "Timer 1",
+      "desc": "An auto-generated timer consisting of 25min - 5min pairs",
+      "spec": [
+        { "name": "work", "icon": "business_center", "duration": 25 },
+        { "name": "break", "icon": "local_cafe", "duration": 5 }
+      ]
+    },
+    {
+      "id": "b03834db-d153-474a-872b-7b88d7e1f780",
+      "name": "Timer 2",
+      "desc": "Auto-generated timer",
+      "spec": [
+        { "name": "work", "icon": "business_center", "duration": 25 },
+        { "name": "break", "icon": "local_cafe", "duration": 5 },
+        { "name": "work", "icon": "business_center", "duration": 20 },
+        { "name": "break", "icon": "local_cafe", "duration": 10 }
+      ]
+    }
+  ],
+  "settings": { "lastUsedTimer": "", "grayscaleMode": false },
+  "version": "0.3.3"
 }
